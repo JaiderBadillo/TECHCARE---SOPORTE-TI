@@ -1,4 +1,5 @@
-# Archivos de configuración con claves sensibles
+# Archivos de configuración con credenciales
+config/config.php
 config.php
 
 # Scripts temporales de prueba

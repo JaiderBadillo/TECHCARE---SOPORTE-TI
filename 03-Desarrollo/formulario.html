@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal de Soporte TI | Registro de Incidentes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a0ca3;
+      --primary-light: #4cc9f0;
+      --bg-dark: #0f172a;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    h1, h2, h3, h4, h5, h6, .brand-title {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .main-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+    }
+
+    .card-header-gradient {
+      background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+      color: white;
+      padding: 2.2rem 2rem;
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border-color);
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+    }
+
+    .tipo-card-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .tipo-card-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .tipo-card-box {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      height: 100%;
+      background: #f8fafc;
+    }
+
+    .tipo-card-box i {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--primary);
+      transition: transform 0.2s;
+    }
+
+    .tipo-card-option:hover .tipo-card-box {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
+
+    .tipo-card-option input[type="radio"]:checked + .tipo-card-box {
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.08);
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+
+    .tipo-card-option input[type="radio"]:checked + .tipo-card-box i {
+      color: var(--primary);
+      transform: scale(1.15);
+    }
+
+    .tipo-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 0.15rem;
+      color: #1e293b;
+    }
+
+    .tipo-desc {
+      font-size: 0.73rem;
+      color: #64748b;
+      line-height: 1.2;
+    }
+
+    .btn-submit-ticket {
+      background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+      border: none;
+      color: white;
+      padding: 0.9rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit-ticket:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(67, 97, 238, 0.5);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top py-3">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="formulario.html">
+      <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center shadow" style="width: 38px; height: 38px;">
+        <i class="bi bi-cpu-fill fs-5"></i>
+      </div>
+      <div>
+        <span class="brand-title fw-bold fs-5 tracking-tight">TechCare <span class="text-info">Soporte TI</span></span>
+        <span class="d-block small text-light opacity-75" style="font-size: 0.7rem;">Mesa de Ayuda & Atención a Usuarios</span>
+      </div>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="reporte.php" class="btn btn-outline-light btn-sm px-3 rounded-pill d-flex align-items-center gap-2">
+        <i class="bi bi-speedometer2"></i>
+        <span>Panel de Gestión TI</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+      
+      <div class="main-card">
+        <div class="card-header-gradient text-center">
+          <div class="badge bg-white text-primary fw-bold px-3 py-1 rounded-pill mb-2 shadow-sm">
+            <i class="bi bi-shield-check me-1"></i> Mesa de Ayuda 24/7
+          </div>
+          <h3 class="fw-bold mb-1">Registrar Solicitud de Soporte</h3>
+          <p class="mb-0 text-white-50 small">Describe tu incidencia técnica y será canalizada inmediatamente con el especialista a cargo.</p>
+        </div>
+
+        <div class="p-4 p-md-5">
+          <div id="alertMsg"></div>
+
+          <form id="formSoporte" novalidate>
+            <!-- Datos del Usuario -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-muted">Nombre del Solicitante *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
+                  <input type="text" class="form-control" name="nombre" placeholder="Ej. Carlos Mendoza" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small text-muted">Correo Corporativo *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                  <input type="email" class="form-control" name="email" placeholder="usuario@empresa.com" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Asunto -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold small text-muted">Asunto del Problema *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-chat-left-text text-muted"></i></span>
+                <input type="text" class="form-control" name="asunto" placeholder="Ej. Pérdida de conectividad VPN en sucursal" required>
+              </div>
+            </div>
+
+            <!-- Clasificación del Problema -->
+            <div class="mb-4">
+              <label class="form-label fw-bold d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-tags-fill text-primary me-1"></i> Clasificación del Problema (Especialidad) *</span>
+                <span class="badge bg-light text-secondary border">Seleccione una opción</span>
+              </label>
+
+              <div class="row g-2">
+                <!-- RED -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="RED" checked>
+                    <div class="tipo-card-box">
+                      <i class="bi bi-hdd-network-fill"></i>
+                      <div class="tipo-title">RED</div>
+                      <div class="tipo-desc">WiFi, VPN, Switches, Enlaces</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- SOFTWARE -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="SOFTWARE">
+                    <div class="tipo-card-box">
+                      <i class="bi bi-window-sidebar"></i>
+                      <div class="tipo-title">SOFTWARE</div>
+                      <div class="tipo-desc">ERP, Apps, Office, SO</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- HARDWARE -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="HARDWARE">
+                    <div class="tipo-card-box">
+                      <i class="bi bi-laptop"></i>
+                      <div class="tipo-title">HARDWARE</div>
+                      <div class="tipo-desc">Laptops, Monitores, Impresoras</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- SEGURIDAD -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="SEGURIDAD">
+                    <div class="tipo-card-box">
+                      <i class="bi bi-shield-lock-fill"></i>
+                      <div class="tipo-title">SEGURIDAD</div>
+                      <div class="tipo-desc">Phishing, Accesos, Firewall</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- CLOUD & SERVIDORES -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="CLOUD_SERVIDORES">
+                    <div class="tipo-card-box">
+                      <i class="bi bi-cloud-check-fill"></i>
+                      <div class="tipo-title">CLOUD / SERVIDORES</div>
+                      <div class="tipo-desc">AWS, Azure, Docker, Linux</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- BASE DE DATOS -->
+                <div class="col-6 col-md-4">
+                  <label class="tipo-card-option w-100">
+                    <input type="radio" name="tipo_problema" value="BASE_DE_DATOS">
+                    <div class="tipo-card-box">
+                      <i class="bi bi-database-fill-gear"></i>
+                      <div class="tipo-title">BASE DE DATOS</div>
+                      <div class="tipo-desc">MySQL, Oracle, Consultas</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prioridad / Nivel de Urgencia -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold small text-muted">Nivel de Urgencia / Impacto *</label>
+              <div class="row g-2">
+                <div class="col-3">
+                  <input type="radio" class="btn-check" name="prioridad" id="prio-baja" value="baja" autocomplete="off">
+                  <label class="btn btn-outline-secondary w-100 py-2 rounded-3 text-nowrap" for="prio-baja">
+                    <i class="bi bi-arrow-down text-success"></i> Baja
+                  </label>
+                </div>
+                <div class="col-3">
+                  <input type="radio" class="btn-check" name="prioridad" id="prio-media" value="media" autocomplete="off" checked>
+                  <label class="btn btn-outline-primary w-100 py-2 rounded-3 text-nowrap" for="prio-media">
+                    <i class="bi bi-dash text-primary"></i> Media
+                  </label>
+                </div>
+                <div class="col-3">
+                  <input type="radio" class="btn-check" name="prioridad" id="prio-alta" value="alta" autocomplete="off">
+                  <label class="btn btn-outline-warning w-100 py-2 rounded-3 text-nowrap" for="prio-alta">
+                    <i class="bi bi-arrow-up text-warning"></i> Alta
+                  </label>
+                </div>
+                <div class="col-3">
+                  <input type="radio" class="btn-check" name="prioridad" id="prio-critica" value="critica" autocomplete="off">
+                  <label class="btn btn-outline-danger w-100 py-2 rounded-3 text-nowrap" for="prio-critica">
+                    <i class="bi bi-exclamation-triangle-fill text-danger"></i> Crítica
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mensaje Detallado -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold small text-muted">Descripción Detallada del Problema *</label>
+              <textarea class="form-control" name="mensaje" rows="4" placeholder="Indica mensajes de error exactos, equipos involucrados o pasos para reproducir la falla..." required></textarea>
+              <div class="form-text text-muted small"><i class="bi bi-info-circle me-1"></i> Nuestra mesa de ayuda evaluará tu solicitud para una pronta solución.</div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <button type="submit" id="btnSubmit" class="btn btn-submit-ticket w-100 d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-send-fill"></i>
+              <span>Enviar Solicitud de Soporte</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 text-white-50 small">
+        &copy; 2026 TechCare Soporte TI. Mesa de Ayuda y Asistencia Técnica Corporativa.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('formSoporte').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = document.getElementById('btnSubmit');
+  const msgBox = document.getElementById('alertMsg');
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Registrando solicitud...';
+  msgBox.innerHTML = '';
+
+  try {
+    const data = new FormData(this);
+    const res = await fetch('guardar.php', { method: 'POST', body: data });
+    const json = await res.json();
+
+    if (json.ok) {
+      msgBox.innerHTML = `
+        <div class="alert alert-success d-flex align-items-center gap-3 border-0 shadow-sm rounded-3 mb-4" role="alert">
+          <i class="bi bi-check-circle-fill fs-3 text-success"></i>
+          <div>
+            <strong>¡Solicitud enviada con éxito!</strong>
+            <p class="mb-0 small">${json.mensaje} Un especialista técnico ha sido notificado y te contactará a la brevedad.</p>
+          </div>
+        </div>
+      `;
+      this.reset();
+      // Restaurar radio buttons por defecto
+      document.querySelector('input[name="tipo_problema"][value="RED"]').checked = true;
+      document.getElementById('prio-media').checked = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      msgBox.innerHTML = `
+        <div class="alert alert-danger d-flex align-items-center gap-2 border-0 shadow-sm rounded-3 mb-4">
+          <i class="bi bi-exclamation-octagon-fill fs-4"></i>
+          <div><strong>Error:</strong> ${json.error || 'No se pudo registrar la solicitud.'}</div>
+        </div>
+      `;
+    }
+  } catch (err) {
+    msgBox.innerHTML = `
+      <div class="alert alert-danger d-flex align-items-center gap-2 border-0 shadow-sm rounded-3 mb-4">
+        <i class="bi bi-wifi-off fs-4"></i>
+        <div><strong>Error de conexión:</strong> No se pudo comunicar con el servidor.</div>
+      </div>
+    `;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-send-fill"></i> <span>Enviar Solicitud de Soporte</span>';
+  }
+});
+</script>
+</body>
+</html>

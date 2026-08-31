@@ -4,6 +4,7 @@ echo ========================================================
 echo   Iniciando Servidor Web TechCare Soporte TI (PHP)
 echo ========================================================
 echo.
+cd /d "%~dp0"
 echo Abriendo en su navegador: http://localhost:8000
 start http://localhost:8000/
 echo.

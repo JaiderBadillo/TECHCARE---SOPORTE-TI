@@ -5,6 +5,7 @@
  */
 
 require_once __DIR__ . '/../Models/Ticket.php';
+require_once __DIR__ . '/AuthController.php';
 
 class TicketController {
 
@@ -19,8 +20,13 @@ class TicketController {
             exit;
         }
 
-        $nombre = trim($_POST['nombre'] ?? '');
-        $email = trim($_POST['email'] ?? '');
+        AuthController::initSession();
+        $currentUser = AuthController::getUser();
+        $usuario_id = $currentUser ? $currentUser['id'] : null;
+
+        $nombre = trim($_POST['nombre'] ?? ($currentUser['nombre'] ?? ''));
+        $email = trim($_POST['email'] ?? ($currentUser['email'] ?? ''));
+        $empresa = trim($_POST['empresa'] ?? ($currentUser['empresa'] ?? ''));
         $asunto = trim($_POST['asunto'] ?? '');
         $tipo_problema = trim($_POST['tipo_problema'] ?? 'SOFTWARE');
         $prioridad = trim($_POST['prioridad'] ?? 'media');
@@ -37,7 +43,7 @@ class TicketController {
             exit;
         }
 
-        $res = Ticket::create($nombre, $email, $asunto, $tipo_problema, $prioridad, $mensaje);
+        $res = Ticket::create($nombre, $email, $asunto, $tipo_problema, $prioridad, $mensaje, $empresa, $usuario_id);
 
         if ($res['ok']) {
             echo json_encode([

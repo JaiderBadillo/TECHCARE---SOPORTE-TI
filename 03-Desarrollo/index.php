@@ -1,7 +1,7 @@
 <?php
 /**
  * Enrutador Principal / Front Controller
- * TechCare Soporte TI (Arquitectura MVC con Autenticación)
+ * TechCare Soporte TI (Arquitectura MVC con Autenticación Dual y RBAC)
  */
 
 require_once __DIR__ . '/config/config.php';
@@ -19,6 +19,10 @@ $route = $_GET['route'] ?? ($_POST['route'] ?? null);
 if ($action) {
     switch ($action) {
         // Acciones Públicas
+        case 'registro':
+            AuthController::registro();
+            break;
+
         case 'login':
             AuthController::login();
             break;
@@ -31,19 +35,19 @@ if ($action) {
             TicketController::guardar();
             break;
 
-        // Acciones Protegidas (Requieren Login)
+        // Acciones Protegidas para Técnicos y Administradores
         case 'ticket_estado':
-            AuthController::requireAuth();
+            AuthController::requireAdmin();
             TicketController::actualizarEstado();
             break;
             
         case 'ia_solucion':
-            AuthController::requireAuth();
+            AuthController::requireAdmin();
             IAController::solucionarTicket();
             break;
             
         case 'ia_analisis':
-            AuthController::requireAuth();
+            AuthController::requireAdmin();
             IAController::analizarEstrategia();
             break;
             
@@ -56,19 +60,31 @@ if ($action) {
 
 // 2. Manejo de Vistas (HTML)
 
+// Vista de Registro de Usuario
+if ($route === 'registro') {
+    if (AuthController::isAuthenticated()) {
+        header('Location: index.php?route=formulario');
+        exit;
+    }
+    require_once __DIR__ . '/views/registro.php';
+    exit;
+}
+
 // Vista de Login
 if ($route === 'login') {
     if (AuthController::isAuthenticated()) {
-        header('Location: index.php?route=dashboard');
+        $u = AuthController::getUser();
+        $dest = ($u['rol'] === 'admin' || $u['rol'] === 'tecnico') ? 'dashboard' : 'formulario';
+        header('Location: index.php?route=' . $dest);
         exit;
     }
     require_once __DIR__ . '/views/login.php';
     exit;
 }
 
-// Vista del Dashboard (PROTEGIDA)
+// Vista del Dashboard (PROTEGIDA SOLO PARA ADMIN / TÉCNICOS)
 if ($route === 'dashboard' || $route === 'reporte') {
-    AuthController::requireAuth();
+    AuthController::requireAdmin();
 
     // Parámetros de filtrado
     $filtroEstado = trim($_GET['estado'] ?? '');
@@ -83,5 +99,5 @@ if ($route === 'dashboard' || $route === 'reporte') {
     exit;
 }
 
-// Vista por defecto: Formulario de Radicación (PÚBLICA)
+// Vista por defecto: Portal de Radicación e Historial de Solicitudes
 require_once __DIR__ . '/views/formulario.php';

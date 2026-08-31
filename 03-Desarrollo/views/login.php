@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acceso Administrativo - TechCare Soporte TI</title>
+  <title>Iniciar Sesión - TechCare Soporte TI</title>
   
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,17 +39,17 @@
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5 col-xl-4">
+    <div class="col-md-7 col-lg-5 col-xl-4">
       
       <div class="card login-card text-white p-4 p-md-5">
         
         <!-- Header / Logo -->
         <div class="text-center mb-4">
-          <div class="bg-primary text-white rounded-4 p-3 d-inline-flex align-items-center justify-content-center shadow mb-3" style="width: 60px; height: 60px;">
+          <div class="bg-primary text-white rounded-4 p-3 d-inline-flex align-items-center justify-content-center shadow mb-3" style="width: 58px; height: 58px;">
             <i class="bi bi-shield-lock-fill fs-2"></i>
           </div>
-          <h4 class="fw-bold text-white mb-1">Acceso Administrativo</h4>
-          <p class="text-white-50 small mb-0">Panel de Control & Gestión de Tickets TI</p>
+          <h4 class="fw-bold text-white mb-1">Iniciar Sesión</h4>
+          <p class="text-white-50 small mb-0">TechCare Mesa de Ayuda & Diagnóstico TI</p>
         </div>
 
         <!-- Alerta de Respuesta -->
@@ -63,7 +63,7 @@
             <label for="loginEmail" class="form-label small text-light opacity-75 fw-semibold">Correo Electrónico</label>
             <div class="input-group">
               <span class="input-group-text bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white-50"><i class="bi bi-envelope"></i></span>
-              <input type="email" class="form-control bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white" id="loginEmail" name="email" value="admin@techcare.com" placeholder="admin@techcare.com" required>
+              <input type="email" class="form-control bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white" id="loginEmail" name="email" value="cliente@empresa.com" placeholder="usuario@empresa.com" required>
             </div>
           </div>
 
@@ -72,7 +72,7 @@
             <label for="loginPassword" class="form-label small text-light opacity-75 fw-semibold">Contraseña</label>
             <div class="input-group">
               <span class="input-group-text bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white-50"><i class="bi bi-key"></i></span>
-              <input type="password" class="form-control bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white" id="loginPassword" name="password" value="admin123" placeholder="••••••••" required>
+              <input type="password" class="form-control bg-dark bg-opacity-50 border-secondary border-opacity-50 text-white" id="loginPassword" name="password" value="cliente123" placeholder="••••••••" required>
               <button class="btn btn-outline-secondary border-secondary border-opacity-50 text-white-50" type="button" id="btnTogglePassword">
                 <i class="bi bi-eye" id="toggleIcon"></i>
               </button>
@@ -80,28 +80,32 @@
           </div>
 
           <!-- Credenciales Demo Sugeridas -->
-          <div class="card bg-dark bg-opacity-50 border border-secondary border-opacity-25 rounded-3 p-2 mb-4">
-            <div class="d-flex align-items-center justify-content-between">
-              <span class="small text-white-50"><i class="bi bi-info-circle me-1 text-info"></i> Acceso por defecto:</span>
-              <button type="button" class="btn btn-link btn-sm text-info p-0 text-decoration-none small" id="btnUsarDemo">Autocompletar</button>
+          <div class="card bg-dark bg-opacity-50 border border-secondary border-opacity-25 rounded-3 p-2 mb-3">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <span class="small text-white-50"><i class="bi bi-magic text-warning me-1"></i> Accesos Demo Rápidos:</span>
             </div>
-            <div class="small text-light opacity-75 mt-1 font-monospace" style="font-size: 0.75rem;">
-              Usuario: <code>admin@techcare.com</code><br>
-              Clave: <code>admin123</code>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-info btn-sm flex-fill py-1 small" style="font-size: 0.75rem;" id="btnDemoCliente">
+                <i class="bi bi-person me-1"></i>Usuario Cliente
+              </button>
+              <button type="button" class="btn btn-outline-warning btn-sm flex-fill py-1 small" style="font-size: 0.75rem;" id="btnDemoAdmin">
+                <i class="bi bi-shield-check me-1"></i>Admin TI
+              </button>
             </div>
           </div>
 
           <!-- Botón Ingresar -->
           <button type="submit" id="btnLogin" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow d-flex align-items-center justify-content-center gap-2">
             <i class="bi bi-box-arrow-in-right"></i>
-            <span>Iniciar Sesión</span>
+            <span>Ingresar al Sistema</span>
           </button>
         </form>
 
-        <!-- Volver al portal público -->
-        <div class="text-center mt-4 pt-2 border-top border-secondary border-opacity-25">
-          <a href="index.php?route=formulario" class="text-white-50 text-decoration-none small d-inline-flex align-items-center gap-1 hover-light">
-            <i class="bi bi-arrow-left"></i> Volver a Radicar Solicitud
+        <!-- Registro de nuevo usuario -->
+        <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+          <span class="text-white-50 small">¿No tienes una cuenta de usuario? </span>
+          <a href="index.php?route=registro" class="text-info text-decoration-none small fw-semibold d-block mt-1">
+            <i class="bi bi-person-plus me-1"></i> Regístrate gratis aquí
           </a>
         </div>
 
@@ -120,9 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const passInput = document.getElementById('loginPassword');
   const emailInput = document.getElementById('loginEmail');
   const toggleIcon = document.getElementById('toggleIcon');
-  const btnUsarDemo = document.getElementById('btnUsarDemo');
 
-  // Mostrar / Ocultar contraseña
   btnToggle.addEventListener('click', () => {
     if (passInput.type === 'password') {
       passInput.type = 'text';
@@ -133,13 +135,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Autocompletar demo
-  btnUsarDemo.addEventListener('click', () => {
+  document.getElementById('btnDemoCliente')?.addEventListener('click', () => {
+    emailInput.value = 'cliente@empresa.com';
+    passInput.value = 'cliente123';
+  });
+
+  document.getElementById('btnDemoAdmin')?.addEventListener('click', () => {
     emailInput.value = 'admin@techcare.com';
     passInput.value = 'admin123';
   });
 
-  // Envío del Login
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -166,17 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (json.ok) {
         mostrarAlerta(json.mensaje, 'success');
         setTimeout(() => {
-          window.location.href = json.redirect || 'index.php?route=dashboard';
+          window.location.href = json.redirect || 'index.php?route=formulario';
         }, 800);
       } else {
         mostrarAlerta(json.error || 'Credenciales incorrectas.', 'danger');
         btnLogin.disabled = false;
-        btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i><span>Iniciar Sesión</span>';
+        btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i><span>Ingresar al Sistema</span>';
       }
     } catch (err) {
       mostrarAlerta('Error de comunicación con el servidor.', 'danger');
       btnLogin.disabled = false;
-      btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i><span>Iniciar Sesión</span>';
+      btnLogin.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i><span>Ingresar al Sistema</span>';
     }
   });
 

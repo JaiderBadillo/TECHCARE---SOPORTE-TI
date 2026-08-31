@@ -1,7 +1,7 @@
 <?php
 /**
  * Modelo de Datos: Ticket (Solicitud de Soporte)
- * Capa de Acceso a Datos (Data Access Object / Active Record)
+ * Capa de Acceso a Datos (DAO / Active Record)
  */
 
 require_once __DIR__ . '/../../config/database.php';
@@ -11,7 +11,7 @@ class Ticket {
     /**
      * Crear una nueva solicitud de soporte
      */
-    public static function create($nombre, $email, $asunto, $tipo, $prioridad, $mensaje) {
+    public static function create($nombre, $email, $asunto, $tipo, $prioridad, $mensaje, $empresa = null, $usuario_id = null) {
         $conn = Database::getConnection();
         
         $tiposValidos = ['RED', 'SOFTWARE', 'HARDWARE', 'SEGURIDAD', 'CLOUD_SERVIDORES', 'BASE_DE_DATOS'];
@@ -20,8 +20,8 @@ class Ticket {
         if (!in_array($tipo, $tiposValidos, true)) $tipo = 'SOFTWARE';
         if (!in_array($prioridad, $prioridadesValidas, true)) $prioridad = 'media';
         
-        $stmt = $conn->prepare("INSERT INTO solicitudes (nombre, email, asunto, tipo_problema, prioridad, mensaje, estado) VALUES (?, ?, ?, ?, ?, ?, 'pendiente')");
-        $stmt->bind_param("ssssss", $nombre, $email, $asunto, $tipo, $prioridad, $mensaje);
+        $stmt = $conn->prepare("INSERT INTO solicitudes (usuario_id, nombre, email, empresa, asunto, tipo_problema, prioridad, mensaje, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pendiente')");
+        $stmt->bind_param("isssssss", $usuario_id, $nombre, $email, $empresa, $asunto, $tipo, $prioridad, $mensaje);
         
         $success = $stmt->execute();
         $nuevoId = $stmt->insert_id;
@@ -40,12 +40,30 @@ class Ticket {
      */
     public static function getById($id) {
         $conn = Database::getConnection();
-        $stmt = $conn->prepare("SELECT id, nombre, email, asunto, tipo_problema, prioridad, mensaje, estado, solucion_ia, fecha_creacion FROM solicitudes WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, usuario_id, nombre, email, empresa, asunto, tipo_problema, prioridad, mensaje, estado, solucion_ia, fecha_creacion FROM solicitudes WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $ticket = $stmt->get_result()->fetch_assoc();
         $stmt->close();
         return $ticket;
+    }
+
+    /**
+     * Obtener todos los tickets de un usuario específico (Portal de Cliente)
+     */
+    public static function getByUser($usuario_id, $email = '') {
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT id, usuario_id, nombre, email, empresa, asunto, tipo_problema, prioridad, mensaje, estado, solucion_ia, fecha_creacion FROM solicitudes WHERE usuario_id = ? OR email = ? ORDER BY fecha_creacion DESC");
+        $stmt->bind_param("is", $usuario_id, $email);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        
+        $tickets = [];
+        while ($row = $res->fetch_assoc()) {
+            $tickets[] = $row;
+        }
+        $stmt->close();
+        return $tickets;
     }
 
     /**
@@ -83,7 +101,7 @@ class Ticket {
     }
 
     /**
-     * Obtener listado de tickets con filtros opcionales
+     * Obtener listado de tickets con filtros opcionales (Dashboard Administrativo)
      */
     public static function getAll($filtroEstado = '', $filtroTipo = '', $filtroPrioridad = '', $filtroBusqueda = '') {
         $conn = Database::getConnection();
@@ -108,15 +126,16 @@ class Ticket {
             $types .= 's';
         }
         if (!empty($filtroBusqueda)) {
-            $where[] = "(nombre LIKE ? OR email LIKE ? OR asunto LIKE ?)";
+            $where[] = "(nombre LIKE ? OR email LIKE ? OR empresa LIKE ? OR asunto LIKE ?)";
             $busq = "%$filtroBusqueda%";
             $params[] = $busq;
             $params[] = $busq;
             $params[] = $busq;
-            $types .= 'sss';
+            $params[] = $busq;
+            $types .= 'ssss';
         }
 
-        $sql = "SELECT id, nombre, email, asunto, tipo_problema, prioridad, mensaje, estado, solucion_ia, fecha_creacion FROM solicitudes";
+        $sql = "SELECT id, usuario_id, nombre, email, empresa, asunto, tipo_problema, prioridad, mensaje, estado, solucion_ia, fecha_creacion FROM solicitudes";
         if ($where) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
@@ -146,24 +165,28 @@ class Ticket {
         
         // Total global
         $rTotal = $conn->query("SELECT COUNT(*) as total FROM solicitudes")->fetch_assoc();
-        $total = (int)$rTotal['total'];
+        $total = (int)($rTotal['total'] ?? 0);
         
         // Este mes
         $rMes = $conn->query("SELECT COUNT(*) as total_mes FROM solicitudes WHERE MONTH(fecha_creacion) = MONTH(CURRENT_DATE()) AND YEAR(fecha_creacion) = YEAR(CURRENT_DATE())")->fetch_assoc();
-        $esteMes = (int)$rMes['total_mes'];
+        $esteMes = (int)($rMes['total_mes'] ?? 0);
         
         // Estados
         $rEstados = $conn->query("SELECT estado, COUNT(*) as c FROM solicitudes GROUP BY estado");
         $estados = ['pendiente' => 0, 'en_proceso' => 0, 'resuelto' => 0];
-        while ($row = $rEstados->fetch_assoc()) {
-            $estados[$row['estado']] = (int)$row['c'];
+        if ($rEstados) {
+            while ($row = $rEstados->fetch_assoc()) {
+                $estados[$row['estado']] = (int)$row['c'];
+            }
         }
         
         // Prioridades
         $rPrios = $conn->query("SELECT prioridad, COUNT(*) as c FROM solicitudes GROUP BY prioridad");
         $prioridades = ['baja' => 0, 'media' => 0, 'alta' => 0, 'critica' => 0];
-        while ($row = $rPrios->fetch_assoc()) {
-            $prioridades[$row['prioridad']] = (int)$row['c'];
+        if ($rPrios) {
+            while ($row = $rPrios->fetch_assoc()) {
+                $prioridades[$row['prioridad']] = (int)$row['c'];
+            }
         }
         
         // Distribución por Tipo de Problema con métricas de resolución
@@ -184,25 +207,27 @@ class Ticket {
         $tipoMayorDemanda = 'N/A';
         $maxTipoCant = -1;
         
-        while ($row = $rTipos->fetch_assoc()) {
-            $tipo = $row['tipo_problema'];
-            $cant = (int)$row['cantidad'];
-            $pct = $total > 0 ? round(($cant / $total) * 100, 1) : 0;
-            
-            if ($cant > $maxTipoCant) {
-                $maxTipoCant = $cant;
-                $tipoMayorDemanda = $tipo;
+        if ($rTipos) {
+            while ($row = $rTipos->fetch_assoc()) {
+                $tipo = $row['tipo_problema'];
+                $cant = (int)$row['cantidad'];
+                $pct = $total > 0 ? round(($cant / $total) * 100, 1) : 0;
+                
+                if ($cant > $maxTipoCant) {
+                    $maxTipoCant = $cant;
+                    $tipoMayorDemanda = $tipo;
+                }
+                
+                $datosTipos[$tipo] = [
+                    'tipo' => $tipo,
+                    'cantidad' => $cant,
+                    'porcentaje' => $pct,
+                    'pendientes' => (int)$row['pendientes'],
+                    'resueltos' => (int)$row['resueltos'],
+                    'criticos' => (int)$row['criticos'],
+                    'altos' => (int)$row['altos']
+                ];
             }
-            
-            $datosTipos[$tipo] = [
-                'tipo' => $tipo,
-                'cantidad' => $cant,
-                'porcentaje' => $pct,
-                'pendientes' => (int)$row['pendientes'],
-                'resueltos' => (int)$row['resueltos'],
-                'criticos' => (int)$row['criticos'],
-                'altos' => (int)$row['altos']
-            ];
         }
         
         // Tendencia mensual (últimos 6 meses)
@@ -215,9 +240,11 @@ class Ticket {
         ");
         $mesesLabels = [];
         $mesesData = [];
-        while ($row = $rMeses->fetch_assoc()) {
-            $mesesLabels[] = $row['mes'];
-            $mesesData[] = (int)$row['total'];
+        if ($rMeses) {
+            while ($row = $rMeses->fetch_assoc()) {
+                $mesesLabels[] = $row['mes'];
+                $mesesData[] = (int)$row['total'];
+            }
         }
         
         $tasaResolucion = $total > 0 ? round(($estados['resuelto'] / $total) * 100, 1) : 0;

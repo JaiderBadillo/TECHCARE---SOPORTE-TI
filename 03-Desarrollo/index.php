@@ -1,34 +1,49 @@
 <?php
 /**
  * Enrutador Principal / Front Controller
- * TechCare Soporte TI (Arquitectura MVC)
+ * TechCare Soporte TI (Arquitectura MVC con Autenticación)
  */
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/src/Models/Ticket.php';
+require_once __DIR__ . '/src/Models/User.php';
 require_once __DIR__ . '/src/Controllers/TicketController.php';
 require_once __DIR__ . '/src/Controllers/IAController.php';
+require_once __DIR__ . '/src/Controllers/AuthController.php';
 
 $action = $_GET['action'] ?? ($_POST['action'] ?? null);
 $route = $_GET['route'] ?? ($_POST['route'] ?? null);
 
-// 1. Manejo de Acciones API (JSON)
+// 1. Manejo de Acciones de Autenticación y API (JSON)
 if ($action) {
     switch ($action) {
+        // Acciones Públicas
+        case 'login':
+            AuthController::login();
+            break;
+            
+        case 'logout':
+            AuthController::logout();
+            break;
+
         case 'ticket_guardar':
             TicketController::guardar();
             break;
-            
+
+        // Acciones Protegidas (Requieren Login)
         case 'ticket_estado':
+            AuthController::requireAuth();
             TicketController::actualizarEstado();
             break;
             
         case 'ia_solucion':
+            AuthController::requireAuth();
             IAController::solucionarTicket();
             break;
             
         case 'ia_analisis':
+            AuthController::requireAuth();
             IAController::analizarEstrategia();
             break;
             
@@ -40,7 +55,21 @@ if ($action) {
 }
 
 // 2. Manejo de Vistas (HTML)
+
+// Vista de Login
+if ($route === 'login') {
+    if (AuthController::isAuthenticated()) {
+        header('Location: index.php?route=dashboard');
+        exit;
+    }
+    require_once __DIR__ . '/views/login.php';
+    exit;
+}
+
+// Vista del Dashboard (PROTEGIDA)
 if ($route === 'dashboard' || $route === 'reporte') {
+    AuthController::requireAuth();
+
     // Parámetros de filtrado
     $filtroEstado = trim($_GET['estado'] ?? '');
     $filtroTipo = trim($_GET['tipo'] ?? '');
@@ -54,5 +83,5 @@ if ($route === 'dashboard' || $route === 'reporte') {
     exit;
 }
 
-// Vista por defecto: Formulario de Radicación
+// Vista por defecto: Formulario de Radicación (PÚBLICA)
 require_once __DIR__ . '/views/formulario.php';

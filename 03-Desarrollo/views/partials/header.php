@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/../../src/Controllers/AuthController.php';
+$isAuth = AuthController::isAuthenticated();
+$currentUser = AuthController::getUser();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,11 +45,30 @@
             <i class="bi bi-plus-circle me-1"></i> Radicar Ticket
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <?= ($activePage ?? '') === 'dashboard' ? 'active fw-bold text-white' : '' ?> px-3 py-2 rounded-pill" href="index.php?route=dashboard">
-            <i class="bi bi-speedometer2 me-1"></i> Panel Directivo & IA
-          </a>
-        </li>
+        
+        <?php if ($isAuth): ?>
+          <li class="nav-item">
+            <a class="nav-link <?= ($activePage ?? '') === 'dashboard' ? 'active fw-bold text-white' : '' ?> px-3 py-2 rounded-pill" href="index.php?route=dashboard">
+              <i class="bi bi-speedometer2 me-1"></i> Panel Directivo & IA
+            </a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-secondary bg-opacity-50 text-light border border-secondary px-3 py-2 rounded-pill small">
+                <i class="bi bi-person-circle text-info me-1"></i> <?= htmlspecialchars($currentUser['nombre']) ?>
+              </span>
+              <a href="index.php?action=logout" class="btn btn-outline-danger btn-sm rounded-pill px-3" title="Cerrar sesión">
+                <i class="bi bi-box-arrow-right me-1"></i> Salir
+              </a>
+            </div>
+          </li>
+        <?php else: ?>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-primary btn-sm px-3 py-2 rounded-pill shadow-sm fw-semibold" href="index.php?route=login">
+              <i class="bi bi-shield-lock-fill me-1"></i> Acceso Administrador
+            </a>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>

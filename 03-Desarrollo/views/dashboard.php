@@ -42,7 +42,12 @@ function getPrioridadBadge($prioridad) {
   <!-- Encabezado del Dashboard -->
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-      <h3 class="fw-bold mb-1">Panel de Control Gerencial & Decisiones IA</h3>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <h3 class="fw-bold mb-0">Panel de Control Gerencial & Decisiones IA</h3>
+        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-1 small">
+          <i class="bi bi-shield-lock-fill me-1"></i> <?= htmlspecialchars($currentUser['nombre'] ?? 'Administrador TI') ?>
+        </span>
+      </div>
       <p class="text-muted small mb-0">Monitoreo en tiempo real de incidentes y recomendaciones estratégicas de negocio.</p>
     </div>
     <div class="d-flex flex-wrap gap-2">

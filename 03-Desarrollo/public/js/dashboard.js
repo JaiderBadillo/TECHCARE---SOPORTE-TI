@@ -274,6 +274,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  function abrirModalSolucion(ticketId, ticketAsunto) {
+    currentTicketId = ticketId;
+    document.getElementById('modalIASubtitle').textContent = 'Ticket #' + currentTicketId + ': ' + ticketAsunto;
+    
+    document.getElementById('iaModalToast').classList.add('d-none');
+    const warningBox = document.getElementById('iaModalWarning');
+    if (warningBox) warningBox.classList.add('d-none');
+
+    const modalEl = document.getElementById('modalSolucionIA');
+    if (!modalIAInstance) {
+      modalIAInstance = new bootstrap.Modal(modalEl);
+    }
+    modalIAInstance.show();
+    // Por defecto usa el motor local rápido (0 tokens). Si el usuario quiere Gemini, pulsa el botón Gemini Cloud.
+    obtenerSolucionTicket(currentTicketId, false, 'local');
+  }
+
   document.getElementById('btnRegenerarGemini')?.addEventListener('click', () => {
     if (currentTicketId > 0) obtenerSolucionTicket(currentTicketId, true, 'gemini');
   });
@@ -282,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentTicketId > 0) obtenerSolucionTicket(currentTicketId, true, 'local');
   });
 
-  async function obtenerSolucionTicket(id, force, motor = 'gemini') {
+  async function obtenerSolucionTicket(id, force, motor = 'local') {
     const loader = document.getElementById('modalIALoader');
     const loaderText = document.getElementById('modalLoaderText');
     const content = document.getElementById('modalIAContent');
@@ -295,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLocal) btnLocal.disabled = true;
 
     if (motor === 'local') {
-      loaderText.textContent = 'Generando diagnóstico técnico con el Motor Experto Local (0 Tokens)...';
+      loaderText.textContent = 'Generando diagnóstico instantáneo con el Motor Experto Local (0 Tokens)...';
     } else {
       loaderText.textContent = 'Consultando Google Gemini Cloud para diagnóstico técnico personalizado...';
     }
@@ -401,6 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnEjecutarAnalisisGemini')?.addEventListener('click', () => cargarDecisionesIA('gemini'));
   document.getElementById('btnEjecutarAnalisisLocal')?.addEventListener('click', () => cargarDecisionesIA('local'));
   
-  // Cargar análisis inicial
-  cargarDecisionesIA('gemini');
+  // Cargar análisis inicial en MODO LOCAL (Ultra-Rápido, 0 Tokens)
+  cargarDecisionesIA('local');
 });

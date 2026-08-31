@@ -1,9 +1,12 @@
 # Archivos de configuración con credenciales
 config/config.php
+03-Desarrollo/config/config.php
 config.php
+03-Desarrollo/config.php
 
 # Scripts temporales de prueba
 test_*.php
+03-Desarrollo/test_*.php
 
 # Archivos de entorno y logs
 *.log

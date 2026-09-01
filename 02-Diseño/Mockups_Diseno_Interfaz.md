@@ -28,230 +28,96 @@
 
 ---
 
-## 2. Catálogo de Pantallas y Wireframes Estructurados
-
-```text
-├── 1. Portal de Radicación de Incidentes (views/formulario.php)
-├── 2. Portal de Historial "Mis Solicitudes" (views/formulario.php - Tab 2)
-├── 3. Módulo de Autenticación / Login (views/login.php)
-├── 4. Módulo de Registro de Usuarios Clientes (views/registro.php)
-├── 5. Dashboard Gerencial & Hub de Decisiones IA (views/dashboard.php)
-└── 6. Modal Copiloto de Diagnóstico Técnico con IA (views/partials/modal_ia.php)
-```
+## 2. Galería Visual de Mockups de la Aplicación
 
 ---
 
-### Pantalla 1: Portal de Radicación de Incidentes Técnicos (`views/formulario.php`)
-Permite a los usuarios y empleados de las empresas cliente reportar fallas técnicas con autocompletado inteligente de sus datos corporativos.
+### 🖥️ Mockup 1: Dashboard Gerencial & Hub de Decisiones IA (`views/dashboard.php`)
+Panel directivo con 6 tarjetas KPIs, gráficos dinámicos en tiempo real con Chart.js, Hub prescriptivo con IA y tabla de solicitudes.
 
-```text
-+-----------------------------------------------------------------------------------------------+
-| [🛡️ TechCare Soporte TI]             [📝 Radicar Solicitud]  [👤 Carlos Mendoza (Logística)] [Salir] |
-+-----------------------------------------------------------------------------------------------+
-|                                                                                               |
-|            [ (•) 1. Radicar Nueva Solicitud ]    [ ( ) 2. Mis Solicitudes Registradas (3) ]   |
-|                                                                                               |
-|   +---------------------------------------------------------------------------------------+   |
-|   |                       MESA DE AYUDA TI — REPORTAR INCIDENTE TÉCNICO                   |   |
-|   |       🏢 Empresa: Logística Global S.A.S   |   💼 Cargo: Líder de Contabilidad       |   |
-|   +---------------------------------------------------------------------------------------+   |
-|   |                                                                                       |   |
-|   |   Nombre Completo (*):                      Correo Corporativo (*):                   |   |
-|   |   [ 👤 Carlos Mendoza                     ] [ ✉️ cliente@empresa.com               ] |   |
-|   |                                                                                       |   |
-|   |   Empresa / Organización (*):               Categoría del Problema (*):               |   |
-|   |   [ 🏢 Logística Global S.A.S             ] [ 💻 Software & Aplicaciones (Office) v ] |   |
-|   |                                                                                       |   |
-|   |   Nivel de Criticidad (*):                                                            |   |
-|   |   [ 🟡 Media (Problema individual manejable)                                       v ] |   |
-|   |                                                                                       |   |
-|   |   Asunto del Problema (*):                                                            |   |
-|   |   [ Ej. Aviso de expiración de licencia Microsoft 365 en módulo de facturación       ] |   |
-|   |                                                                                       |   |
-|   |   Descripción Detallada del Incidente (*):                                            |   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |   | Al abrir Excel y Word aparece un banner superior indicando que la suscripción |   |
-|   |   | está en modo de funcionalidad reducida. No permite guardar archivos contables.|   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |                                                                                       |   |
-|   |                  [ 🚀 ENVIAR SOLICITUD DE SOPORTE TÉCNICO ]                           |   |
-|   +---------------------------------------------------------------------------------------+   |
-|                                                                                               |
-+-----------------------------------------------------------------------------------------------+
-```
-
----
-
-### Pantalla 2: Historial de "Mis Solicitudes" (`views/formulario.php` - Tab 2)
-Permite al usuario cliente hacer seguimiento del estado de atención y ver el diagnóstico emitido por el equipo de TI y los motores de IA.
-
-```text
-+-----------------------------------------------------------------------------------------------+
-|   +---------------------------------------------------------------------------------------+   |
-|   | 📁 Historial de Solicitudes Registradas                              [ 🔄 Actualizar ] |   |
-|   +---------------------------------------------------------------------------------------+   |
-|   |                                                                                       |   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |   | [Ticket #14] [SOFTWARE]  📅 31/08/2026 15:30                   [🟡 EN REVISIÓN] |   |
-|   |   | Asunto: Aviso de expiración de licencia Microsoft 365 en facturación          |   |
-|   |   | Detalle: Al abrir Excel y Word aparece aviso de funcionalidad reducida...     |   |
-|   |   |                                                                               |   |
-|   |   | 🤖 Diagnóstico Preliminar de IA:                                              |   |
-|   |   | Token OAuth de Entra ID desincronizado. Se requiere purgar caché de OSPP.VBS. |   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |                                                                                       |   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |   | [Ticket #09] [REDES / VPN]  📅 28/08/2026 09:15                   [🟢 RESUELTO] |   |
-|   |   | Asunto: Corte en túnel VPN de sucursal norte                                  |   |
-|   |   | Detalle: El enlace FortiClient no responde handshake en puerto 443...         |   |
-|   |   +-------------------------------------------------------------------------------+   |
-|   |                                                                                       |   |
-+-----------------------------------------------------------------------------------------------+
-```
-
----
-
-### Pantalla 3: Módulo de Inicio de Sesión (`views/login.php`)
-Control de acceso con tarjeta Glassmorphism flotante, alternador de visibilidad de contraseña y botones de acceso demo instantáneo.
-
-```text
-+-----------------------------------------------------------------------------------------------+
-|                                                                                               |
-|                               +-------------------------------+                               |
-|                               |       [ 🛡️ TechCare TI ]       |                               |
-|                               |     Acceso Administrativo     |                               |
-|                               |   Mesa de Ayuda & Diagnóstico |                               |
-|                               +-------------------------------+                               |
-|                               |                               |                               |
-|                               | Correo Electrónico:           |                               |
-|                               | [ ✉️ cliente@empresa.com    ] |                               |
-|                               |                               |                               |
-|                               | Contraseña:                   |                               |
-|                               | [ 🔑 ••••••••••••         👁️ ] |                               |
-|                               |                               |                               |
-|                               | 🪄 Accesos Demo Rápidos:      |                               |
-|                               | [ 👤 Usuario Cliente ] [ 🛡️ Admin TI ]                        |
-|                               |                               |                               |
-|                               | [ 🔓 INGRESAR AL SISTEMA ]    |                               |
-|                               |                               |                               |
-|                               | ───────────────────────────── |                               |
-|                               | ¿No tienes cuenta?            |                               |
-|                               | 👉 [Regístrate gratis aquí]   |                               |
-|                               +-------------------------------+                               |
-|                                                                                               |
-+-----------------------------------------------------------------------------------------------+
-```
-
----
-
-### Pantalla 4: Módulo de Registro de Usuarios Clientes (`views/registro.php`)
-Formulario en 2 columnas para la incorporación (*onboarding*) de colaboradores y clientes empresariales.
-
-```text
-+-----------------------------------------------------------------------------------------------+
-|                                                                                               |
-|                   +-------------------------------------------------------+                   |
-|                   |         [ 👤+ ] Crear Cuenta de Usuario               |                   |
-|                   |   Regístrese para reportar y consultar incidentes TI  |                   |
-|                   +-------------------------------------------------------+                   |
-|                   |                                                       |                   |
-|                   | Nombre Completo (*):        Correo Corporativo (*):   |                   |
-|                   | [ Carlos Mendoza          ] [ cliente@empresa.com   ] |                   |
-|                   |                                                       |                   |
-|                   | Empresa / Organización (*): Cargo en la Empresa (*):  |                   |
-|                   | [ Logística Global S.A.S  ] [ Líder de Contabilidad ] |                   |
-|                   |                                                       |                   |
-|                   | Contraseña (*):             Confirmar Contraseña (*): |                   |
-|                   | [ ••••••••••••            ] [ ••••••••••••          ] |                   |
-|                   |                                                       |                   |
-|                   |       [ 🚀 REGISTRARME Y ACCEDER AL PORTAL ]          |                   |
-|                   |                                                       |                   |
-|                   | ¿Ya tienes una cuenta? 👉 [Inicia Sesión aquí]        |                   |
-|                   +-------------------------------------------------------+                   |
-|                                                                                               |
-+-----------------------------------------------------------------------------------------------+
-```
-
----
-
-### Pantalla 5: Panel de Control Gerencial & Hub Estratégico IA (`views/dashboard.php`)
-Panel central para el equipo de soporte e ingeniería TI con métricas en tiempo real, Hub Prescriptivo y tabla interactiva.
+![Dashboard Gerencial y Hub de Decisiones IA](img/mockup_dashboard.jpg)
 
 ```text
 +-----------------------------------------------------------------------------------------------+
 | [🛡️ TechCare Soporte TI]  [Radicar Ticket]  [📊 Dashboard & IA]  [👤 Admin: Jaider B.] [Salir] |
 +-----------------------------------------------------------------------------------------------+
-|                                                                                               |
 |  Panel de Control Gerencial & Decisiones IA    [✨ Análisis con Gemini] [⚡ Análisis Local]   |
-|  Monitoreo en tiempo real de incidentes        (Modo Cloud Bajo Demanda) (0 Tokens Instant)   |
-|                                                                                               |
-|  +--------------+ +--------------+ +--------------+ +--------------+ +-------------+ +------+ |
-|  | Total Tickets| |   Este Mes   | |  Pendientes  | |  En Proceso  | |  Resolución | | Top  | |
-|  |     14       | |      14      | |   3 (Rojo)   | |  4 (Amarillo)| | 50.0% (Verde| | SOFT | |
-|  +--------------+ +--------------+ +--------------+ +--------------+ +-------------+ +------+ |
+|  [Total Tickets: 14] [Este Mes: 14] [Pendientes: 3] [En Proceso: 2] [Resolución: 50%] [Top: SOFT]
 |                                                                                               |
 |  +--[ HUB DE TOMA DE DECISIONES ESTRATÉGICAS CON IA (CTO PRESCRIPTIVO) ]--------------------+  |
-|  | 🤖 Dictamen Ejecutivo: "Demanda concentrada en Software (42.8%). Se recomienda reforzar  |  |
-|  | capacitación en Entra ID y contratar 1 especialista L2 con certificación MD-102..."     |  |
-|  |                                                                                          |  |
+|  | 🤖 Dictamen: Demanda concentrada en Software (42.8%). Se recomienda contratar 1 esp. L2  |  |
 |  | [ (•) 1. Contratación ] [ ( ) 2. Infraestructura ] [ ( ) 3. Capacitación ] [ ( ) 4. Auto]|  |
-|  |                                                                                          |  |
-|  | +------------------------------------+  +------------------------------------+           |  |
-|  | | 💼 Ing. Soporte Aplicaciones & ERP|  | 🔒 Especialista en Ciberseguridad |           |  |
-|  | | Seniority: Semi-Senior (3+ años)   |  | Seniority: Senior (5+ años)        |           |  |
-|  | | Prioridad: Alta Prioridad          |  | Prioridad: Urgente / Crítica       |           |  |
-|  | | Certs: MD-102, ITIL 4, Azure Dev   |  | Certs: CompTIA Security+, CEH      |           |  |
-|  | | 📈 Impacto: Reducción 45% en MTTR  |  | 📈 Impacto: Monitoreo SOC 24/7     |           |  |
-|  | +------------------------------------+  +------------------------------------+           |  |
 |  +------------------------------------------------------------------------------------------+  |
-|                                                                                               |
-|  +--[ GRÁFICAS ESTADÍSTICAS ]-----------------------+ +--[ ESPECIALIDADES ]-----------------+ |
-|  | 📊 Evolución de Solicitudes por Mes (Chart.js)   | | 🍩 Distribución por Categoría       | |
-|  |   [ █   █   █   █ ]                              | |    (Software, Redes, Hardware...)   | |
-|  +--------------------------------------------------+ +-------------------------------------+ |
-|                                                                                               |
-|  +--[ FILTROS: [Buscar...] [Todos los Estados v] [Categorías v] [Prioridades v] [🔍 Filtrar] -+ |
-|                                                                                               |
-|  +--[ TABLA DE GESTIÓN DE TICKETS ]---------------------------------------------------------+ |
-|  | #ID | Fecha        | Solicitante / Empresa | Asunto              | Prioridad | Estado    | IA| |
-|  | #14 | 31/08 15:30  | Carlos Mendoza (Log.) | Expiración Lic. M365| 🟡 Media  |[En Proceso|💡]| |
-|  | #13 | 31/08 14:10  | Andrea Díaz (Bancaria)| Caída túnel VPN IPsec| 🔴 Crítica|[Pendiente |💡]| |
-|  | #12 | 30/08 11:20  | Pedro Gómez (Salud)   | Deadlock en base SQL| 🟠 Alta   |[Resuelto  |💡]| |
-|  +------------------------------------------------------------------------------------------+ |
+|  +--[ GRÁFICAS CHART.JS: Barras Mensuales & Donut de Especialidades ]-----------------------+  |
+|  +--[ TABLA DE TICKETS: ID, Fecha, Solicitante, Asunto, Criticidad, Estado y Solución IA ]----+ |
 +-----------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-### Pantalla 6: Modal de Diagnóstico y Copiloto IA (`views/partials/modal_ia.php`)
-Ventana emergente que entrega el diagnóstico forense, plan paso a paso y comandos listos para ejecutar.
+### 📝 Mockup 2: Portal de Radicación de Incidentes (`views/formulario.php`)
+Formulario web corporativo con autocompletado inteligente de empresa y cargo del usuario conectado, selector de categorías y prioridades.
+
+![Portal de Radicación de Incidentes Técnicos](img/mockup_portal_radicacion.jpg)
+
+```text
++-----------------------------------------------------------------------------------------------+
+|   +---------------------------------------------------------------------------------------+   |
+|   |                       MESA DE AYUDA TI — REPORTAR INCIDENTE TÉCNICO                   |   |
+|   |       🏢 Empresa: Logística Global S.A.S   |   💼 Cargo: Líder de Contabilidad       |   |
+|   +---------------------------------------------------------------------------------------+   |
+|   |   Nombre: [ 👤 Carlos Mendoza ]           Correo: [ ✉️ cliente@empresa.com ]          |   |
+|   |   Empresa: [ 🏢 Logística Global S.A.S ]  Categoría: [ 💻 Software & Aplicaciones v ] |   |
+|   |   Criticidad: [ 🟡 Media (Problema individual manejable)                            ] |   |
+|   |   Asunto: [ Ej. Aviso de expiración de licencia Microsoft 365                       ] |   |
+|   |   Descripción: [ Descripción detallada de síntomas y capturas...                    ] |   |
+|   |                                                                                       |   |
+|   |                  [ 🚀 ENVIAR SOLICITUD DE SOPORTE TÉCNICO ]                           |   |
+|   +---------------------------------------------------------------------------------------+   |
++-----------------------------------------------------------------------------------------------+
+```
+
+---
+
+### 🔐 Mockup 3: Módulo de Inicio de Sesión (`views/login.php`)
+Control de acceso con tarjeta flotante Glassmorphism sobre fondo Dark Indigo, visibilidad de clave interactiva y accesos demo rápidos.
+
+![Módulo de Inicio de Sesión Glassmorphism](img/mockup_login.jpg)
+
+```text
++-----------------------------------------------------------------------------------------------+
+|                               +-------------------------------+                               |
+|                               |       [ 🛡️ TechCare TI ]       |                               |
+|                               |     Acceso Administrativo     |                               |
+|                               |   Mesa de Ayuda & Diagnóstico |                               |
+|                               +-------------------------------+                               |
+|                               | Correo: [ ✉️ cliente@empresa.com ]                            |
+|                               | Contraseña: [ 🔑 •••••••••••• 👁️ ]                           |
+|                               | 🪄 Demo: [ 👤 Usuario Cliente ] [ 🛡️ Admin TI ]               |
+|                               | [ 🔓 INGRESAR AL SISTEMA ]                                    |
+|                               | ¿No tienes cuenta? 👉 [Regístrate gratis aquí]                |
+|                               +-------------------------------+                               |
++-----------------------------------------------------------------------------------------------+
+```
+
+---
+
+### 🤖 Mockup 4: Modal Copiloto de Diagnóstico Técnico IA (`views/partials/modal_ia.php`)
+Ventana emergente que desglosa el diagnóstico forense, causas raíz, checklist paso a paso y terminal de comandos.
+
+![Modal Copiloto de Diagnóstico Técnico con IA](img/mockup_modal_ia.jpg)
 
 ```text
 +-----------------------------------------------------------------------------------------------+
 |  [🤖 Diagnóstico y Solución Técnica con IA — Ticket #14]                                  [X] |
 +-----------------------------------------------------------------------------------------------+
-|                                                                                               |
 |  [✨ Enfoque #1: Mitigación Rápida N1]  [⚡ Motor Experto Local (0 Tokens)]  [⏱️ Est. 15-20 min]|
 |                                                                                               |
-|  🩺 Diagnóstico Detectado:                                                                    |
-|  Alerta de expiración de suscripción o token de activación caducado en Microsoft 365...       |
-|                                                                                               |
-|  🔍 Causa Raíz Probable:                                                                      |
-|  1. Desincronización del token OAuth de Entra ID en Credential Manager de Windows.            |
-|  2. Licencia reasignada en admin.microsoft.com.                                               |
-|                                                                                               |
-|  📋 Plan de Acción Técnico (Paso a Paso):                                                     |
-|  1. Cerrar procesos de Word y Excel desde el Administrador de Tareas.                         |
-|  2. Abrir 'control keymgr.cpl' y purgar credenciales genéricas de Office16.                   |
-|  3. Ejecutar script OSPP.VBS /dstatus para verificar estado del token.                        |
-|  4. Revalidar inicio de sesión en Word con correo corporativo del usuario.                    |
-|                                                                                               |
-|  💻 Comandos / Herramientas Sugeridas (Terminal Oscura):                                      |
-|  [ cscript "C:\Program Files\Microsoft Office\Office16\OSPP.VBS" /dstatus ] [ dsregcmd /status]|
-|                                                                                               |
-|  🛡️ Medida Preventiva a Largo Plazo:                                                         |
-|  Configurar alertas automáticas de renovación con 30 días de anticipación en el portal M365.  |
-|                                                                                               |
+|  🩺 Diagnóstico: Alerta de expiración de suscripción de Microsoft 365 en módulo de facturación|
+|  🔍 Causa Raíz: 1. Desincronización de token OAuth. 2. Licencia pendiente de asignación.     |
+|  📋 Plan de Acción: Checklist paso a paso para el técnico L1/L2.                              |
+|  💻 Comandos Sugeridos: [ cscript OSPP.VBS /dstatus ] [ dsregcmd /status ]                    |
+|  🛡️ Medida Preventiva: Configurar alertas automáticas de renovación con 30 días de anticipo.  |
 |  ─────────────────────────────────────────────────────────────────────────────────────────── |
 |  [ Cerrar ]                          [ ⚡ Solución Local (0 Tokens) ] [ ✨ Diagnóstico Gemini ] |
 +-----------------------------------------------------------------------------------------------+
@@ -261,7 +127,7 @@ Ventana emergente que entrega el diagnóstico forense, plan paso a paso y comand
 
 ## 3. Principios de Experiencia de Usuario (UX) Implementados
 
-1. **Jerarquía Visual Clara:** Diferenciación cromática para prioridades y estados que permite a los técnicos identificar incidentes críticos en menos de 3 segundos.
-2. **Retroalimentación Asíncrona (Sin Recargas):** El cambio de estado de tickets y las consultas de IA operan vía `fetch()` en segundo plano con *spinners* interactivos.
-3. **Cero Fricción para el Cliente:** Autocompletado de datos empresariales que reduce el tiempo de radicación de tickets en un 60%.
-4. **Optimización de Consumo de Tokens:** El sistema prioriza el motor local inmediato y delega las consultas a la nube de Google exclusivamente bajo demanda del usuario.
+1. **Jerarquía Visual Inmediata:** Uso de códigos de color estándar (Verde/Amarillo/Rojo) que permiten al equipo técnico clasificar urgencias en menos de 3 segundos.
+2. **Operaciones Asíncronas (Sin Recarga):** Los cambios de estado de tickets y las consultas a la IA funcionan vía `fetch()` en segundo plano con indicadores de carga.
+3. **Cero Fricción en Radicación:** Los usuarios autenticados disfrutan de autocompletado de empresa y cargo, reduciendo el tiempo de reporte en un 60%.
+4. **Optimización de Consumo de Tokens:** El sistema ejecuta por defecto el motor local instantáneo y solo invoca a Google Gemini Cloud bajo solicitud explícita del usuario.

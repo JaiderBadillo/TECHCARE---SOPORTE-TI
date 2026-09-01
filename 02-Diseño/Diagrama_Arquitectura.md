@@ -93,38 +93,7 @@ flowchart TB
 
 ---
 
-## 3. Diagrama de Secuencia: Registro, Autenticación y Radicación de Ticket
+## 3. Diagramas de Secuencia del Sistema
+Para consultar la especificación detallada de los 5 flujos temporales del sistema (Registro y Login, Radicación e Historial, Diagnóstico IA Híbrido, Análisis Estratégico Directivo y Gestión Asíncrona de Estados), consulte el documento dedicado:  
+👉 **[Diagramas de Secuencia Detallados (UML)](Diagramas_de_Secuencia.md)**
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Cliente as 🧑‍💼 Usuario Cliente
-    participant UI as 🖥️ Navegador (registro / login / form)
-    participant Router as 🔀 index.php (Front Controller)
-    participant AuthCtrl as ⚙️ AuthController
-    participant TicketCtrl as ⚙️ TicketController
-    participant UserMdl as 🗄️ User Model
-    participant TicketMdl as 🗄️ Ticket Model
-    participant BD as 💾 MySQL (soporte_db)
-
-    Note over Cliente, BD: 1. Registro de Nueva Cuenta
-    Cliente->>UI: Completa registro (nombre, email, empresa, cargo, pass)
-    UI->>Router: POST /index.php?action=registro
-    Router->>AuthCtrl: registro()
-    AuthCtrl->>UserMdl: register(nombre, email, empresa, cargo, password, 'cliente')
-    UserMdl->>BD: INSERT INTO usuarios (..., password=BCRYPT_HASH, rol='cliente')
-    BD-->>UserMdl: OK (ID creado)
-    UserMdl-->>AuthCtrl: User Creado
-    AuthCtrl-->>UI: Sesión iniciada + Redirección a formulario.php
-
-    Note over Cliente, BD: 2. Radicación de Ticket con Autocompletado
-    UI->>Cliente: Muestra Formulario con datos de Empresa autocompletados
-    Cliente->>UI: Envía Asunto, Categoría y Descripción del problema
-    UI->>Router: POST /index.php?action=ticket_guardar
-    Router->>TicketCtrl: guardar()
-    TicketCtrl->>TicketMdl: create(nombre, email, asunto, tipo, prioridad, mensaje, empresa, usuario_id)
-    TicketMdl->>BD: INSERT INTO solicitudes (usuario_id, nombre, email, empresa, ...)
-    BD-->>TicketMdl: OK (Ticket #ID)
-    TicketMdl-->>TicketCtrl: OK
-    TicketCtrl-->>UI: Notificación de éxito + Aparece en pestaña "Mis Solicitudes"
-```

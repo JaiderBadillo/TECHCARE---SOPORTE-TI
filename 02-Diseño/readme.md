@@ -8,7 +8,6 @@ Esta carpeta contiene todos los diagramas, modelos y especificaciones técnicas 
 
 1. **[Diagrama de Arquitectura del Sistema](Diagrama_Arquitectura.md):**
    * Diagrama de flujo de capas en Mermaid (Frontend, Enrutamiento, Controladores, Servicios IA, Modelos y Persistencia).
-   * Diagrama de secuencia de Registro, Autenticación y Radicación de Tickets.
    * Especificación de componentes y mecanismo de resiliencia (*Fallback*).
 
 2. **[Diagrama Entidad - Relación (DER)](Diagrama_Entidad_Relacion.md):**
@@ -21,6 +20,13 @@ Esta carpeta contiene todos los diagramas, modelos y especificaciones técnicas 
    * Tipos de datos SQL, longitudes, restricciones de nulidad (`NULL` / `NOT NULL`) y valores por defecto.
    * Estructura detallada del objeto JSON de diagnósticos en `solucion_ia`.
    * Reglas de integridad y seguridad de datos.
+
+4. **[Diagramas de Secuencia del Sistema](Diagramas_de_Secuencia.md):**
+   * **Flujo 1:** Registro y Autenticación de Usuarios (Control de Acceso RBAC).
+   * **Flujo 2:** Radicación de Incidente Técnico y Consulta de Historial (Portal Cliente).
+   * **Flujo 3:** Diagnóstico Técnico Asistido por IA (Modo Híbrido: Local 0 Tokens / Gemini Cloud).
+   * **Flujo 4:** Análisis Estratégico Directivo y Prescripción de Decisiones TI.
+   * **Flujo 5:** Gestión Asíncrona de Estados de Tickets (AJAX).
 
 ---
 

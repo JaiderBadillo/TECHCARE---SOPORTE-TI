@@ -28,6 +28,12 @@ Esta carpeta contiene todos los diagramas, modelos y especificaciones técnicas 
    * **Flujo 4:** Análisis Estratégico Directivo y Prescripción de Decisiones TI.
    * **Flujo 5:** Gestión Asíncrona de Estados de Tickets (AJAX).
 
+5. **[Especificación de la API REST & Servicios Web](Especificacion_API.md):**
+   * Catálogo completo de endpoints (`registro`, `login`, `ticket_guardar`, `ticket_estado`, `ia_solucion`, `ia_analisis`).
+   * Parámetros de petición (Request), ejemplos de payload y códigos de estado HTTP.
+   * Estructura de respuestas JSON exitosas y de error.
+   * Documentación de la integración externa con Google Gemini REST API.
+
 ---
 
 *Nota: Los diagramas Mermaid se renderizan de forma interactiva y visual directamente en la interfaz web de GitHub.*

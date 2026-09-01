@@ -1,10 +1,10 @@
 # 🎨 Fase 02: Diseño de Software y Arquitectura
 
-Esta carpeta contiene todos los diagramas, modelos y especificaciones técnicas de diseño de la plataforma **TechCare Soporte TI**:
+Esta carpeta contiene todos los diagramas, modelos, mockups y especificaciones técnicas de diseño de la plataforma **TechCare Soporte TI**:
 
 ---
 
-## 📑 Documentos y Diagramas Disponibles
+## 📑 Catálogo de Documentación Técnica
 
 1. **[Diagrama de Arquitectura del Sistema](Diagrama_Arquitectura.md):**
    * Diagrama de flujo de capas en Mermaid (Frontend, Enrutamiento, Controladores, Servicios IA, Modelos y Persistencia).
@@ -32,8 +32,13 @@ Esta carpeta contiene todos los diagramas, modelos y especificaciones técnicas 
    * Catálogo completo de endpoints (`registro`, `login`, `ticket_guardar`, `ticket_estado`, `ia_solucion`, `ia_analisis`).
    * Parámetros de petición (Request), ejemplos de payload y códigos de estado HTTP.
    * Estructura de respuestas JSON exitosas y de error.
-   * Documentación de la integración externa con Google Gemini REST API.
+   * Integración externa con Google Gemini REST API.
+
+6. **[Mockups y Diseño de Interfaz de Usuario (UI/UX)](Mockups_Diseno_Interfaz.md):**
+   * Guía de estilos y sistema de diseño (Design Tokens, paleta de colores y tipografía Inter).
+   * Wireframes estructurados de las 6 vistas principales (Radicación, Historial, Login, Registro, Dashboard y Modal IA).
+   * Principios de experiencia de usuario (UX) implementados.
 
 ---
 
-*Nota: Los diagramas Mermaid se renderizan de forma interactiva y visual directamente en la interfaz web de GitHub.*
+*Nota: Los diagramas Mermaid y wireframes se visualizan de forma interactiva y optimizada directamente en GitHub.*

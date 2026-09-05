@@ -7,6 +7,7 @@ config.php
 # Scripts temporales de prueba
 test_*.php
 03-Desarrollo/test_*.php
+!04-Pruebas/test_runner.php
 
 # Archivos de entorno y logs
 *.log

@@ -1,7 +1,7 @@
 # 🧪 6.4 INFORME INTEGRAL DE PRUEBAS Y CALIDAD DE SOFTWARE (QA)
 **Proyecto:** TechCare Soporte TI — Mesa de Ayuda Inteligente con Diagnóstico IA y Analítica Predictiva  
 **Versión del Sistema:** 2.2.0  
-**Responsables del Equipo QA:** Jaider Niño, Juan Camilo Pinzón, Wilson Forero  
+**Desarrollador y Responsable de QA:** Jaider Augusto Niño Badillo  
 **Fecha de Ejecución:** Septiembre 2026  
 **Estado General de Pruebas:** ✅ **APROBADO (100% de Casos Superados)**  
 
@@ -40,9 +40,7 @@
 | **Herramientas de Testing** | TechCare Automated Test Runner CLI (`test_runner.php`), Postman v11, DevTools Network/Security |
 
 ### 1.4 Roles y Responsabilidades
-* **Jaider Niño (Líder QA & Arquitectura):** Diseño del plan de pruebas, ejecución de pruebas de seguridad, verificación de algoritmos criptográficos BCRYPT y supervisión del motor de base de datos.
-* **Juan Camilo Pinzón (Especialista en IA & Backend):** Diseño y validación del banco de pruebas semánticas NLP, pruebas de estrés y fallback del conector Gemini Cloud / LocalExpertService.
-* **Wilson Forero (Especialista Funcional & Frontend):** Ejecución de casos de prueba funcionales de interfaz, validación de formularios, compatibilidad entre navegadores y experiencia de usuario (UX).
+* **Jaider Augusto Niño Badillo (Líder Integral de Desarrollo y QA):** Responsable único de la arquitectura del sistema, desarrollo full-stack, diseño y ejecución del plan de pruebas, verificación criptográfica de seguridad (BCRYPT, Prepared Statements), implementación del motor semántico NLP y aseguramiento de calidad del software.
 
 ### 1.5 Criterios de Aceptación, Suspensión y Reanudación
 * **Criterio de Aceptación:** El 100% de las pruebas críticas y de seguridad deben resultar `PASS`. No se toleran defectos clasificados con severidad Alta o Crítica.
@@ -411,4 +409,4 @@ La siguiente matriz garantiza que cada requerimiento del sistema se encuentre va
 
 ---
 
-*Documento elaborado y validado por el Equipo de Control de Calidad y Pruebas de Software (QA).*
+*Documento elaborado y validado por Jaider Augusto Niño Badillo — Desarrollador y Líder de Calidad de Software (QA).*

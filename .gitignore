@@ -11,6 +11,8 @@ test_*.php
 
 # Archivos de entorno y logs
 *.log
+!04-Pruebas/repositorio_documental/**/*.log
+!04-Pruebas/repositorio_documental/*/*.log
 .env
 
 # Editores e IDEs

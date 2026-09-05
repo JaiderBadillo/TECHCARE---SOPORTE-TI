@@ -1,0 +1,5 @@
+2026-09-02T14:10:01Z [Microsoft.Identity.Client] [Warning] AcquireTokenSilent failed: MsalUiRequiredException.
+2026-09-02T14:10:02Z [Microsoft.Identity.Client] [Error] ErrorCode: interaction_required. SubError: message_store_disconnected.
+2026-09-02T14:10:03Z [Win32.Office.Activation] [Error] Product key validation error 0xC004C003: The activation server determined the specified product key has exceeded its unlock limit.
+2026-09-02T14:10:05Z [Microsoft.Entra.PRT] [Notice] Primary Refresh Token (PRT) verification status: EXPIRED. User prompt needed.
+2026-09-02T14:10:10Z [Office16.Licensing] [Alert] Transitioning Office Suite applications to Reduced Functionality Mode (Viewer Mode).

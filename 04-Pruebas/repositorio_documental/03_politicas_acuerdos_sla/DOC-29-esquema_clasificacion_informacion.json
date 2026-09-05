@@ -1,0 +1,37 @@
+{
+  "politica_clasificacion": "TAXONOMIA_ACTIVOS_INFORMACION",
+  "niveles": [
+    {
+      "nivel": "PUBLICO",
+      "criterio": "Información destinada a divulgación general sin restricciones.",
+      "ejemplos": [
+        "Formulario público de radicación de tickets",
+        "Manuales de autoservicio de usuario"
+      ]
+    },
+    {
+      "nivel": "INTERNO",
+      "criterio": "Uso exclusivo de colaboradores de la organización.",
+      "ejemplos": [
+        "Procedimientos operativos SOP",
+        "Directorios internos de extensiones"
+      ]
+    },
+    {
+      "nivel": "CONFIDENCIAL",
+      "criterio": "Información sensible cuyo acceso está restringido por rol.",
+      "ejemplos": [
+        "Métricas gerenciales de desempeño",
+        "Reportes de incidentes de seguridad"
+      ]
+    },
+    {
+      "nivel": "RESTRINGIDO",
+      "criterio": "Máxima protección. Acceso solo para administradores autorizados.",
+      "ejemplos": [
+        "Contraseñas cifradas en BCRYPT",
+        "Claves privadas y API Keys de IA"
+      ]
+    }
+  ]
+}

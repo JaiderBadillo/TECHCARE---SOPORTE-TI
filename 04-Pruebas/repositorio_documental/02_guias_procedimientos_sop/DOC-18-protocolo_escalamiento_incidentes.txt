@@ -1,0 +1,14 @@
+MATRIZ DE ESCALAMIENTO TÉCNICO OPERATIVO - MESA DE AYUDA TECHCARE
+Versión: 2026.2
+
+NIVEL 1 (Mesa de Ayuda - Recepción y Triaje):
+- Tiempo Máximo de Atención en Primer Contacto: 15 minutos.
+- Alcance: Desbloqueo de cuentas, reseteo de claves, soporte en navegadores, guía de uso de correo.
+- Criterio de Escalamiento a Nivel 2: Si el problema no se resuelve tras 20 minutos de análisis inicial.
+
+NIVEL 2 (Soporte Técnico Especializado en Sitio / Remoto):
+- Alcance: Diagnóstico de hardware, problemas de perfiles de Windows, conectividad VPN local, licencias de software.
+- Criterio de Escalamiento a Nivel 3: Afectación de servidores, bases de datos o caída masiva de enlaces.
+
+NIVEL 3 (Ingeniería de Infraestructura, Redes y Ciberseguridad):
+- Alcance: Reconfiguración de Firewalls, recuperación ante desastres de bases de datos, respuesta a incidentes de seguridad.

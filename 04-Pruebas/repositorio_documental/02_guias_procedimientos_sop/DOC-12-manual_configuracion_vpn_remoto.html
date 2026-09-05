@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guía Rápida: Conexión Remota Segura VPN</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; padding: 25px; color: #333; max-width: 800px; margin: auto; }
+    h1 { color: #1e3a8a; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; }
+    .card { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 15px; margin: 15px 0; border-radius: 4px; }
+    .code { background: #1e293b; color: #38bdf8; padding: 10px; font-family: Consolas, monospace; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>🌐 Guía Técnica: Conexión VPN Cliente FortiClient</h1>
+  <p>Esta guía orienta al personal técnico y a usuarios en teletrabajo para resolver problemas de conectividad con el túnel corporativo.</p>
+  
+  <div class="card">
+    <strong>Parámetros Oficiales del Gateway VPN:</strong>
+    <ul>
+      <li>Servidor Remoto: <code>vpn.empresa-demo.com</code></li>
+      <li>Puerto de Conexión: <code>443 (SSL-VPN)</code></li>
+      <li>Autenticación: Credenciales de Active Directory + Token 2FA</li>
+    </ul>
+  </div>
+
+  <h3>Comandos de Diagnóstico Rápido:</h3>
+  <div class="code">
+    ipconfig /flushdns<br>
+    Test-NetConnection -ComputerName vpn.empresa-demo.com -Port 443
+  </div>
+</body>
+</html>

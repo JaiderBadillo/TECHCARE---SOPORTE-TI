@@ -1,0 +1,7 @@
+POLÍTICA DE USO ACEPTABLE DE LOS ACTIVOS INFORMÁTICOS DE LA ORGANIZACIÓN
+Código: POL-TI-003
+
+1. Los equipos de cómputo, dispositivos móviles corporativos y cuentas de correo son herramientas de trabajo de propiedad exclusiva de la organización.
+2. Queda expresamente prohibida la instalación de software no licenciado o que no cuente con la aprobación explícita del área de TI.
+3. El uso de la red corporativa para descargas masivas de contenido multimedia personal, minería de criptomonedas o actividades comerciales ajenas a la empresa constituye falta grave.
+4. Toda la información almacenada en los servidores corporativos está sujeta a monitoreo y auditorías de seguridad periódicas.

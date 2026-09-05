@@ -1,0 +1,5 @@
+nivel_prioridad,tiempo_primera_respuesta_max,tiempo_resolucion_comprometido,disponibilidad_servicio,penalizacion_incumplimiento
+critica,15 minutos,2 horas,24/7/365,Revisión formal en comité de dirección y reporte de desviación
+alta,30 minutos,6 horas,Lunes a Viernes 07:00 a 19:00,Priorización automática en cola de despacho
+media,2 horas,24 horas,Horario laboral hábil,Aviso de seguimiento a jefatura
+baja,4 horas,48 horas,Horario laboral hábil,Atención por orden de llegada

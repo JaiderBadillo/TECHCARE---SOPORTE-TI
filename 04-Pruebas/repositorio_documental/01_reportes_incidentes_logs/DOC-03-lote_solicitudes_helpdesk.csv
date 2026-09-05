@@ -1,0 +1,9 @@
+ticket_id,fecha_radicacion,usuario_simulado,empresa_ficticia,tipo_problema,prioridad,asunto_resumido,estado
+TCK-1001,2026-09-01 08:30,user.alpha@ficticia.com,Distribuidora Central S.A.,RED,alta,No puedo conectar a la VPN corporativa,resuelto
+TCK-1002,2026-09-01 09:15,user.beta@ficticia.com,Almacenes Andinos Ltda.,SOFTWARE,media,Licencia de Word indica suscripción por vencer,resuelto
+TCK-1003,2026-09-01 10:00,user.gamma@ficticia.com,Soluciones Digitales Demo,SEGURIDAD,critica,Correo sospechoso solicitando cambio de credencial,resuelto
+TCK-1004,2026-09-01 11:20,user.delta@ficticia.com,Comercializadora Caribe,BASE_DE_DATOS,alta,Timeout al generar reporte de ventas mensual,en_proceso
+TCK-1005,2026-09-01 14:05,user.epsilon@ficticia.com,Inversiones del Valle S.A.S.,HARDWARE,baja,El monitor secundario no enciende tras apagón,pendiente
+TCK-1006,2026-09-02 08:10,user.zeta@ficticia.com,Transportes Unidos Demo,SOFTWARE,alta,Error de sincronización en OneDrive for Business,en_proceso
+TCK-1007,2026-09-02 09:40,user.eta@ficticia.com,Distribuidora Central S.A.,RED,critica,Switch de distribución piso 3 sin enlace uplink,pendiente
+TCK-1008,2026-09-02 11:15,user.theta@ficticia.com,Almacenes Andinos Ltda.,CLOUD_SERVIDORES,alta,Instancia virtual de reportes con 98% de RAM,pendiente

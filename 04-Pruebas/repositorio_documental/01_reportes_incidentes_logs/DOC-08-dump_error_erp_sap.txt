@@ -1,0 +1,14 @@
+SISTEMA DE FACTURACIÓN Y ERP EMPRESARIAL - VOLCADO DE ERROR CRÍTICO
+Identificador de Excepción: ERR_MEMORY_LEAK_0x8007000E
+Fecha: 2026-09-03 16:45:12 COT
+Proceso: ERP_Accounting_Engine.exe (PID: 8140)
+Ruta: C:\Program Files\EnterpriseERP\Bin\ERP_Accounting_Engine.exe
+Detalle del StackTrace:
+   at System.Data.SqlClient.SqlBuffer.CreateBuffer(Int64 length)
+   at System.Data.SqlClient.TdsParser.ReadPlpUnicodeChars(Char[]& buff)
+   at ERP.Module.Billing.ExportManager.BuildAnnualConsolidatedReport(DateTime startDate, DateTime endDate)
+   at System.Threading.Tasks.Task.Execute()
+Mensaje del Error:
+   Out of Memory Exception: El proceso intentó alocar un búfer contiguo de 3.8 GB de memoria RAM superando el límite de proceso x86.
+Acción Inmediata Realizada:
+   Proceso finalizado por el administrador mediante comando taskkill. Se programó migración de la rutina de reportería hacia el pool de 64 bits.

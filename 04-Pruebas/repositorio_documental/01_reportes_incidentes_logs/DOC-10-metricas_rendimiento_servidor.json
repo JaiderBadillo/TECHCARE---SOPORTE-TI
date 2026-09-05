@@ -1,0 +1,25 @@
+{
+  "servidor_id": "SRV-PROD-APP-01",
+  "periodo_muestreo": "2026-09-04 00:00:00 a 23:59:59",
+  "especificaciones": {
+    "cpu_cores": 8,
+    "ram_gb": 32,
+    "almacenamiento_ssd_gb": 500
+  },
+  "metricas_pico": {
+    "cpu_max_porcentaje": 94.2,
+    "hora_pico_cpu": "14:32:00",
+    "ram_max_gb": 28.6,
+    "disco_iops_escritura": 1250,
+    "temperatura_promedio_celsius": 48.5
+  },
+  "alertas_disparadas": [
+    {
+      "timestamp": "2026-09-04 14:35:00",
+      "tipo": "CPU_THRESHOLD_EXCEEDED",
+      "umbral": "90%",
+      "duracion_min": 12
+    }
+  ],
+  "estado_salud": "NORMAL_STABLE"
+}

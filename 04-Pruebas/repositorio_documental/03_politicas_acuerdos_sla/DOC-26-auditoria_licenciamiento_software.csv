@@ -1,0 +1,5 @@
+software_producto,fabricante,tipo_licencia,cantidad_comprada,cantidad_asignada,disponibles,fecha_vencimiento
+Microsoft 365 Business Standard,Microsoft,Suscripción Anual,120,118,2,2026-12-31
+FortiClient ZTNA / VPN,Fortinet,Por Endpoint,150,135,15,2027-04-30
+Windows Server Datacenter Core,Microsoft,Por Núcleo,32,32,0,Perpetua
+MySQL Enterprise Edition,Oracle,Por Socket Servidor,4,4,0,2026-11-15

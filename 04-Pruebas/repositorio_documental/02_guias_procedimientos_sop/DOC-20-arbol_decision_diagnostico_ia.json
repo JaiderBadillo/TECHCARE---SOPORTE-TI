@@ -1,0 +1,24 @@
+{
+  "motor": "LocalExpertService Heuristics",
+  "version": "2.2.0",
+  "reglas_decision": [
+    {
+      "patron_regex": "(vpn|proxy|ipsec|fortinet|cisco)",
+      "asignar_tipo": "RED",
+      "prioridad_por_defecto": "alta",
+      "enfoque_sugerido": "Verificación de gateway, vaciado DNS y reinicio de túnel virtual"
+    },
+    {
+      "patron_regex": "(sql|deadlock|query|bloqueo|timeout)",
+      "asignar_tipo": "BASE_DE_DATOS",
+      "prioridad_por_defecto": "alta",
+      "enfoque_sugerido": "Inspección de hilos activos SHOW PROCESSLIST y terminación de transacción bloqueante"
+    },
+    {
+      "patron_regex": "(phishing|virus|ransomware|hack)",
+      "asignar_tipo": "SEGURIDAD",
+      "prioridad_por_defecto": "critica",
+      "enfoque_sugerido": "Aislamiento inmediato de red y revocación de credenciales corporativas"
+    }
+  ]
+}

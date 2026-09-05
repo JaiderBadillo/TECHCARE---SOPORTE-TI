@@ -1,0 +1,6 @@
+ACUERDO DE CONFIDENCIALIDAD Y TRATAMIENTO ÉTICO DE INFORMACIÓN PARA PERSONAL DE TI
+Referencia: NDA-CORP-2026
+
+1. El personal técnico y de soporte que tenga acceso con privilegios elevados a bases de datos, contraseñas y servidores corporativos se compromete a mantener estricta reserva de toda la información a la que tenga acceso.
+2. Se prohíbe la divulgación, copia no autorizada o alteración de datos almacenados en los sistemas de la empresa.
+3. El incumplimiento de este compromiso acarreará las sanciones disciplinarias y legales pertinentes conforme a la legislación de protección de datos personales.

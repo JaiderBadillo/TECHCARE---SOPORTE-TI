@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Checklist: Mantenimiento Preventivo de Estaciones de Trabajo</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 30px; background: #fafafa; }
+    .box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    h2 { color: #0284c7; }
+    li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🛠️ Protocolo Trimestral de Mantenimiento Preventivo</h2>
+    <ul>
+      <li>✔️ Limpieza de temporales del sistema: <code>%temp%</code> y <code>C:\Windows\Temp</code>.</li>
+      <li>✔️ Comprobación de integridad de archivos de sistema: <code>sfc /scannow</code> y <code>DISM /Online /Cleanup-Image /RestoreHealth</code>.</li>
+      <li>✔️ Verificación de espacio libre en disco C: (mínimo 20% disponible).</li>
+      <li>✔️ Validación de firmas activas en Microsoft Defender for Endpoint.</li>
+    </ul>
+  </div>
+</body>
+</html>

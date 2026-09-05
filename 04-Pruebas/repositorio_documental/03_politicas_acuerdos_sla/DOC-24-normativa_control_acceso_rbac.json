@@ -1,0 +1,42 @@
+{
+  "politica_seguridad": "ROLE_BASED_ACCESS_CONTROL",
+  "version": "2.2.0",
+  "roles": {
+    "cliente": {
+      "descripcion": "Usuario final empleado o cliente corporativo",
+      "permisos": [
+        "radicar_ticket",
+        "consultar_propias_solicitudes",
+        "modificar_perfil_propio"
+      ],
+      "rutas_autorizadas": [
+        "formulario",
+        "mis_solicitudes"
+      ]
+    },
+    "tecnico": {
+      "descripcion": "Especialista de soporte de Mesa de Ayuda",
+      "permisos": [
+        "ver_todos_los_tickets",
+        "cambiar_estado",
+        "generar_diagnostico_ia"
+      ],
+      "rutas_autorizadas": [
+        "dashboard",
+        "modal_ia",
+        "actualizar_estado"
+      ]
+    },
+    "admin": {
+      "descripcion": "Administrador de infraestructura y dirección de TI",
+      "permisos": [
+        "todas_las_funciones",
+        "analitica_estrategica_kpis",
+        "gestion_usuarios_tecnicos"
+      ],
+      "rutas_autorizadas": [
+        "*"
+      ]
+    }
+  }
+}

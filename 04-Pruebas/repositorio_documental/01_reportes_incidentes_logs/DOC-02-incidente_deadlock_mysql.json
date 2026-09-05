@@ -1,0 +1,23 @@
+{
+  "evento_id": "INC-DB-2026-0941",
+  "timestamp": "2026-09-02T11:22:15Z",
+  "motor": "MySQL 8.0.35 InnoDB",
+  "tipo_incidente": "DEADLOCK_DETECTED",
+  "transaccion_1": {
+    "trx_id": "1849201",
+    "hilo_id": 4210,
+    "usuario": "app_techcare_demo",
+    "host": "10.0.4.12",
+    "query_bloqueante": "UPDATE solicitudes SET estado = 'en_proceso', asignado_a = 'tecnico_demo' WHERE id = 1045 LOCK IN SHARE MODE;",
+    "bloqueo_retenido": "RECORD LOCKS space id 42 page no 12 n bits 72 index PRIMARY of table soporte_db.solicitudes"
+  },
+  "transaccion_2": {
+    "trx_id": "1849205",
+    "hilo_id": 4218,
+    "usuario": "app_techcare_demo",
+    "host": "10.0.4.15",
+    "query_victima": "UPDATE solicitudes SET solucion_ia = '{\"categoria\":\"RED\"}' WHERE id = 1045;",
+    "estado": "ROLLBACK_EXECUTED_BY_ENGINE"
+  },
+  "impacto": "Latencia transaccional elevada en API de tickets durante 45 segundos"
+}

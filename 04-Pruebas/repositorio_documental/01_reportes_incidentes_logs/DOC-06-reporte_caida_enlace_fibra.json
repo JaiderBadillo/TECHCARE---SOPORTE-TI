@@ -1,0 +1,15 @@
+{
+  "monitoreo_evento": "NOC_WAN_DEGRADATION",
+  "dispositivo": "Router-Core-Borde-01",
+  "puerto_afectado": "GigabitEthernet0/0/1 (ISP Principal Fibra Óptica)",
+  "timestamp_inicio": "2026-09-03T03:15:00Z",
+  "timestamp_restablecimiento": "2026-09-03T04:25:30Z",
+  "duracion_minutos": 70.5,
+  "causa_reportada_isp": "Corte físico de fibra óptica por obras públicas en vía principal",
+  "mecanismo_failover": {
+    "enlace_secundario": "Radioenlace Microondas 100 Mbps",
+    "tiempo_conmutacion_segundos": 4.2,
+    "perdida_paquetes_promedio": "2.1%",
+    "impacto_servicios": "Telefonía IP degradada, sistemas web ERP operaron en modo contingencia"
+  }
+}

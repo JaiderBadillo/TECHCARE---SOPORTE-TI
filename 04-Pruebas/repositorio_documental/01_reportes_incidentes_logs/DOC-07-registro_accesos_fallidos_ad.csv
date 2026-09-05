@@ -1,0 +1,6 @@
+timestamp,domain_controller,cuenta_ficticia,ip_origen,codigo_evento_windows,motivo_falla
+2026-09-03 07:01:12,DC01.CORP.LOCAL,j.perez.demo,10.0.1.102,4625,Contraseña incorrecta
+2026-09-03 07:01:25,DC01.CORP.LOCAL,j.perez.demo,10.0.1.102,4625,Contraseña incorrecta
+2026-09-03 07:01:40,DC01.CORP.LOCAL,j.perez.demo,10.0.1.102,4625,Contraseña incorrecta
+2026-09-03 07:01:41,DC01.CORP.LOCAL,j.perez.demo,10.0.1.102,4740,Cuenta bloqueada automáticamente por directiva
+2026-09-03 07:15:30,DC02.CORP.LOCAL,m.gomez.demo,192.168.20.15,4625,Nombre de usuario inexistente

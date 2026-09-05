@@ -1,0 +1,16 @@
+REPORTE DE INCIDENTE DE SEGURIDAD CSIRT-2026-0082
+Fecha de Detección: 2026-09-02 09:35:10 UTC
+Tipo de Evento: Campaña de Correo Malicioso (Phishing de Credenciales)
+Origen Simulado: notification-secure-auth@external-fake-portal.net
+Destinatario Afectado: buzon_contabilidad@empresa-demo.com
+Cabeceras Relevantes:
+  Received: from mail-relay-attacker.fake (198.51.100.89) by mx.empresa-demo.com
+  Authentication-Results: spf=fail (sender IP not in SPF record); dkim=none; dmarc=fail
+Asunto del Correo: URGENTE: Su cuenta de Microsoft 365 ha sido suspendida por actividad inusual
+Contenido del Mensaje:
+  "Estimado empleado, ingrese en el siguiente enlace para verificar su contraseña y evitar el bloqueo definitivo:
+   http://portal-login-verify-auth.fake-security-check.ru/login"
+Acción de Contención Aplicada:
+  1. Bloqueo de dominio y dirección IP en Firewall Perimetral y DNS Filter.
+  2. Purgado de buzón de correo corporativo para eliminar mensajes idénticos.
+  3. Forzado de revocación de sesiones OAuth del usuario mediante script PowerShell.

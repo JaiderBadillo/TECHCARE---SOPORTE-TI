@@ -1,0 +1,16 @@
+MANUAL DE PROCEDIMIENTO TÉCNICO: DEPURACIÓN Y REACTIVACIÓN DE LICENCIA OFFICE 365
+Referencia: KB-M365-ACT-09
+
+SÍNTOMA:
+El aplicativo Excel o Word despliega barra superior amarilla: "AVISO DE PRODUCTO: La mayoría de las características de Word se han deshabilitado porque no está activado".
+
+PROCEDIMIENTO DE RESOLUCIÓN POR CONSOLA:
+1. Cerrar todos los procesos de Office en el Administrador de Tareas (WINWORD.EXE, EXCEL.EXE, OUTLOOK.EXE).
+2. Abrir Símbolo del Sistema (CMD) con privilegios de Administrador.
+3. Navegar a la ruta de instalación de Office de 64 bits:
+   cd "C:\Program Files\Microsoft Office\Office16"
+4. Consultar los últimos 5 dígitos de las claves de producto instaladas:
+   cscript ospp.vbs /dstatus
+5. Si aparecen claves genéricas antiguas o expiradas, desinstalarlas ejecutando:
+   cscript ospp.vbs /unpkey:<ULTIMOS_5_DIGITOS>
+6. Abrir Word e iniciar sesión con la cuenta corporativa activa del usuario.

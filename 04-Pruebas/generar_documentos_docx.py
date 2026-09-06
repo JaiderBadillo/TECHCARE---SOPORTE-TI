@@ -1,152 +1,132 @@
 import os
-import zipfile
+import sys
+from docx import Document
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+
+def set_cell_background(cell, fill_hex):
+    tcPr = cell._tc.get_or_add_tcPr()
+    shd = OxmlElement('w:shd')
+    shd.set(qn('w:val'), 'clear')
+    shd.set(qn('w:color'), 'auto')
+    shd.set(qn('w:fill'), fill_hex)
+    tcPr.append(shd)
 
 def create_docx(file_path, title, category, code_doc, explanation, full_content_sections):
     """
-    Genera un archivo .docx nativo válido de Microsoft Word utilizando zipfile y XML estándar OpenXML.
+    Genera un archivo Microsoft Word .docx oficial y 100% válido utilizando python-docx.
     """
-    def xml_esc(text):
-        if text is None:
-            return ""
-        return (str(text)
-                .replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace('"', "&quot;")
-                .replace("'", "&apos;"))
-
-    content_types_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
-  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
-</Types>"""
-
-    rels_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>"""
-
-    doc_rels_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-</Relationships>"""
-
-    styles_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <w:docDefaults>
-    <w:rPrDefault>
-      <w:rPr>
-        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>
-        <w:sz w:val="22"/>
-        <w:color w:val="333333"/>
-      </w:rPr>
-    </w:rPrDefault>
-  </w:docDefaults>
-</w:styles>"""
-
-    body_xml = []
+    doc = Document()
     
-    # Encabezado institucional TechCare
-    body_xml.append(f"""
-    <w:p>
-      <w:pPr>
-        <w:jc w:val="center"/>
-        <w:pBdr><w:bottom w:val="single" w:sz="12" w:space="4" w:color="0056B3"/></w:pBdr>
-      </w:pPr>
-      <w:r>
-        <w:rPr><w:b/><w:sz w:val="28"/><w:color w:val="0056B3"/></w:rPr>
-        <w:t>TECHCARE SOPORTE TI</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr><w:sz w:val="20"/><w:color w:val="666666"/></w:rPr>
-        <w:t>  |  Repositorio Documental de Pruebas (QA)</w:t>
-      </w:r>
-    </w:p>
-    """)
-
-    # Título y Metadatos
-    body_xml.append(f"""
-    <w:p>
-      <w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr>
-      <w:r><w:b/><w:sz w:val="32"/><w:color w:val="1E293B"/></w:r>
-      <w:t>{xml_esc(title)}</w:t>
-    </w:p>
-    <w:p>
-      <w:pPr><w:spacing w:after="200"/></w:pPr>
-      <w:r><w:b/><w:color w:val="0056B3"/><w:t>Código de Documento: </w:t></w:r>
-      <w:r><w:t>{xml_esc(code_doc)}   |   </w:t></w:r>
-      <w:r><w:b/><w:color w:val="0056B3"/><w:t>Categoría: </w:t></w:r>
-      <w:r><w:t>{xml_esc(category)}   |   </w:t></w:r>
-      <w:r><w:b/><w:color w:val="0056B3"/><w:t>Autor/QA: </w:t></w:r>
-      <w:r><w:t>Jaider Augusto Niño Badillo</w:t></w:r>
-    </w:p>
-    """)
-
-    # Cuadro destacado con la explicación
-    body_xml.append(f"""
-    <w:p>
-      <w:pPr>
-        <w:spacing w:before="180" w:after="120"/>
-        <w:pBdr>
-          <w:left w:val="single" w:sz="36" w:space="12" w:color="0056B3"/>
-        </w:pBdr>
-        <w:shd w:val="clear" w:color="auto" w:fill="F0F7FF"/>
-      </w:pPr>
-      <w:r><w:b/><w:sz w:val="24"/><w:color w:val="0056B3"/><w:t>📌 Breve Explicación y Función en las Pruebas:</w:t></w:r>
-      <w:r><w:br/><w:sz w:val="21"/><w:color w:val="2C3E50"/><w:t>{xml_esc(explanation)}</w:t></w:r>
-    </w:p>
-    """)
-
-    # Secciones del contenido
+    for section in doc.sections:
+        section.top_margin = Inches(1)
+        section.bottom_margin = Inches(1)
+        section.left_margin = Inches(1)
+        section.right_margin = Inches(1)
+        
+    # Encabezado institucional
+    header_p = doc.add_paragraph()
+    header_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run_h1 = header_p.add_run("TECHCARE SOPORTE TI")
+    run_h1.bold = True
+    run_h1.font.size = Pt(13)
+    run_h1.font.color.rgb = RGBColor(0, 86, 179) # #0056B3
+    
+    run_h2 = header_p.add_run("  |  Repositorio Documental de Pruebas (QA)")
+    run_h2.font.size = Pt(10)
+    run_h2.font.color.rgb = RGBColor(100, 116, 139)
+    
+    # Título del Documento
+    title_p = doc.add_paragraph()
+    title_p.paragraph_format.space_before = Pt(10)
+    title_p.paragraph_format.space_after = Pt(4)
+    title_run = title_p.add_run(title)
+    title_run.bold = True
+    title_run.font.size = Pt(15)
+    title_run.font.color.rgb = RGBColor(15, 23, 42)
+    
+    # Metadatos del Documento
+    meta_p = doc.add_paragraph()
+    meta_p.paragraph_format.space_after = Pt(10)
+    
+    r1 = meta_p.add_run("Código: ")
+    r1.bold = True
+    r1.font.size = Pt(10)
+    r1.font.color.rgb = RGBColor(0, 86, 179)
+    r_c = meta_p.add_run(f"{code_doc}   |   ")
+    r_c.font.size = Pt(10)
+    
+    r2 = meta_p.add_run("Categoría: ")
+    r2.bold = True
+    r2.font.size = Pt(10)
+    r2.font.color.rgb = RGBColor(0, 86, 179)
+    r_cat = meta_p.add_run(f"{category}   |   ")
+    r_cat.font.size = Pt(10)
+    
+    r3 = meta_p.add_run("Autor/QA: ")
+    r3.bold = True
+    r3.font.size = Pt(10)
+    r3.font.color.rgb = RGBColor(0, 86, 179)
+    r_aut = meta_p.add_run("Jaider Augusto Niño Badillo")
+    r_aut.font.size = Pt(10)
+    
+    # Caja destacada de Explicación y Función en Pruebas
+    callout_table = doc.add_table(rows=1, cols=1)
+    callout_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    callout_table.autofit = False
+    callout_table.columns[0].width = Inches(6.5)
+    
+    cell = callout_table.cell(0, 0)
+    set_cell_background(cell, "F0F7FF")
+    
+    cp = cell.paragraphs[0]
+    cp.paragraph_format.space_before = Pt(4)
+    cp.paragraph_format.space_after = Pt(4)
+    c_title = cp.add_run("📌 Breve Explicación y Función en las Pruebas:")
+    c_title.bold = True
+    c_title.font.size = Pt(10.5)
+    c_title.font.color.rgb = RGBColor(0, 86, 179)
+    
+    cp_body = cell.add_paragraph()
+    cp_body.paragraph_format.space_after = Pt(4)
+    c_text = cp_body.add_run(explanation)
+    c_text.font.size = Pt(10)
+    c_text.font.color.rgb = RGBColor(30, 41, 59)
+    
+    # Espacio tras la tabla
+    spacer = doc.add_paragraph()
+    spacer.paragraph_format.space_before = Pt(6)
+    spacer.paragraph_format.space_after = Pt(0)
+    
+    # Secciones del contenido técnico
     for sec_title, sec_paragraphs in full_content_sections:
-        body_xml.append(f"""
-        <w:p>
-          <w:pPr><w:spacing w:before="240" w:after="80"/></w:pPr>
-          <w:r><w:b/><w:sz w:val="24"/><w:color w:val="0F172A"/><w:t>{xml_esc(sec_title)}</w:t></w:r>
-        </w:p>
-        """)
+        sp = doc.add_paragraph()
+        sp.paragraph_format.space_before = Pt(10)
+        sp.paragraph_format.space_after = Pt(3)
+        s_run = sp.add_run(sec_title)
+        s_run.bold = True
+        s_run.font.size = Pt(11.5)
+        s_run.font.color.rgb = RGBColor(15, 23, 42)
+        
         for p in sec_paragraphs:
-            body_xml.append(f"""
-            <w:p>
-              <w:pPr><w:spacing w:after="100"/></w:pPr>
-              <w:r><w:sz w:val="21"/><w:t>{xml_esc(p)}</w:t></w:r>
-            </w:p>
-            """)
-
-    # Pie institucional
-    body_xml.append("""
-    <w:p>
-      <w:pPr>
-        <w:spacing w:before="360"/>
-        <w:jc w:val="center"/>
-        <w:pBdr><w:top w:val="single" w:sz="6" w:space="8" w:color="CCCCCC"/></w:pBdr>
-      </w:pPr>
-      <w:r>
-        <w:rPr><w:sz w:val="18"/><w:color w:val="888888"/></w:rPr>
-        <w:t>TechCare Soporte TI — Repositorio Documental Oficial | Datos 100% Sintéticos y Anonimizados para QA</w:t>
-      </w:r>
-    </w:p>
-    """)
-
-    document_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <w:body>
-    {''.join(body_xml)}
-    <w:sectPr>
-      <w:pgSz w:w="12240" w:h="15840"/>
-      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
-    </w:sectPr>
-  </w:body>
-</w:document>"""
-
-    with zipfile.ZipFile(file_path, "w", zipfile.ZIP_DEFLATED) as docx:
-        docx.writestr("[Content_Types].xml", content_types_xml)
-        docx.writestr("_rels/.rels", rels_xml)
-        docx.writestr("word/_rels/document.xml.rels", doc_rels_xml)
-        docx.writestr("word/styles.xml", styles_xml)
-        docx.writestr("word/document.xml", document_xml)
+            pp = doc.add_paragraph()
+            pp.paragraph_format.space_after = Pt(3)
+            p_run = pp.add_run(p)
+            p_run.font.size = Pt(10)
+            p_run.font.color.rgb = RGBColor(51, 65, 85)
+            
+    # Pie de página institucional
+    footer_p = doc.add_paragraph()
+    footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    footer_p.paragraph_format.space_before = Pt(16)
+    f_run = footer_p.add_run("TechCare Soporte TI — Repositorio Documental Oficial | Datos 100% Sintéticos y Anonimizados para QA")
+    f_run.font.size = Pt(8.5)
+    f_run.font.color.rgb = RGBColor(148, 163, 184)
+    
+    doc.save(file_path)
 
 
 def main():
@@ -711,9 +691,9 @@ def main():
         file_path = os.path.join(d["folder"], d["filename"])
         create_docx(file_path, d["title"], d["category"], d["code"], d["explanation"], d["sections"])
         total += 1
-        print(f"[{total}/30] Creado archivo Word: {d['filename']}")
+        print(f"[{total}/30] Creado archivo Word 100% nativo: {d['filename']}")
 
-    print(f"\nProceso finalizado con éxito: {total} documentos .docx creados.")
+    print(f"\n¡Éxito! Se generaron los {total} documentos en formato Microsoft Word (.docx) nativos.")
 
 if __name__ == "__main__":
     main()

@@ -49,18 +49,24 @@ class N8NService {
     }
 
     /**
-     * Notificar a n8n cuando un ticket pasa a estado 'resuelto' (Bonus opcional)
+     * Notificar a n8n cuando un ticket pasa a estado 'resuelto'
      * 
-     * @param array $ticketData
+     * @param array $ticketData Datos del ticket resuelto
      * @return bool
      */
     public static function notifyTicketResolved(array $ticketData) {
         $enabled = defined('N8N_WEBHOOK_ENABLED') ? (bool)N8N_WEBHOOK_ENABLED : false;
-        $webhookUrl = defined('N8N_WEBHOOK_RESOLVED_URL') ? trim(N8N_WEBHOOK_RESOLVED_URL) : '';
+        
+        // Si hay URL específica de resuelto se usa, si no, se usa el webhook principal
+        $webhookUrl = defined('N8N_WEBHOOK_RESOLVED_URL') && !empty(N8N_WEBHOOK_RESOLVED_URL) 
+            ? trim(N8N_WEBHOOK_RESOLVED_URL) 
+            : (defined('N8N_WEBHOOK_URL') ? trim(N8N_WEBHOOK_URL) : '');
 
         if (!$enabled || empty($webhookUrl)) {
             return true;
         }
+
+        $appUrl = defined('APP_URL') ? rtrim(APP_URL, '/') : 'http://127.0.0.1:8000';
 
         $payload = [
             'evento' => 'ticket_resuelto',
@@ -68,9 +74,15 @@ class N8NService {
             'ticket_id' => $ticketData['id'] ?? 0,
             'nombre' => $ticketData['nombre'] ?? 'Usuario',
             'email' => $ticketData['email'] ?? '',
+            'empresa' => $ticketData['empresa'] ?? 'Particular',
             'asunto' => $ticketData['asunto'] ?? '',
+            'tipo_problema' => $ticketData['tipo_problema'] ?? 'SOFTWARE',
+            'prioridad' => $ticketData['prioridad'] ?? 'media',
+            'mensaje' => $ticketData['mensaje'] ?? '',
             'estado' => 'resuelto',
-            'mensaje_notificacion' => '¡Buenas noticias! Tu solicitud de soporte ha sido marcada como RESUELTA por el equipo de TI.'
+            'asignado_a' => $ticketData['asignado_a'] ?? 'Equipo de Soporte TI',
+            'url_seguimiento' => $appUrl . '/index.php?action=formulario',
+            'mensaje_notificacion' => '¡Buenas noticias! Tu solicitud de soporte técnico ha sido resuelta exitosamente por nuestro equipo de TI.'
         ];
 
         return self::sendWebhook($webhookUrl, $payload);

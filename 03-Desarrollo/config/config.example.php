@@ -20,8 +20,8 @@ define('APP_URL', 'http://127.0.0.1:8000');
 // Activar o desactivar el envío de Webhooks a n8n (true para activar)
 define('N8N_WEBHOOK_ENABLED', false);
 
-// URL del Webhook en tu instancia de n8n para nuevos tickets radicados
+// URL del Webhook en tu instancia de n8n para tickets radicados
 define('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook/techcare-ticket-creado');
 
-// URL opcional de n8n para cuando un ticket es resuelto
-define('N8N_WEBHOOK_RESOLVED_URL', 'http://localhost:5678/webhook/techcare-ticket-resuelto');
+// URL para cuando un ticket es resuelto (apunta al mismo webhook inteligente)
+define('N8N_WEBHOOK_RESOLVED_URL', 'http://localhost:5678/webhook/techcare-ticket-creado');

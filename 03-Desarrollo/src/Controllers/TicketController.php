@@ -5,6 +5,7 @@
  */
 
 require_once __DIR__ . '/../Models/Ticket.php';
+require_once __DIR__ . '/../Services/N8NService.php';
 require_once __DIR__ . '/AuthController.php';
 
 class TicketController {
@@ -46,10 +47,25 @@ class TicketController {
         $res = Ticket::create($nombre, $email, $asunto, $tipo_problema, $prioridad, $mensaje, $empresa, $usuario_id);
 
         if ($res['ok']) {
+            $ticketId = $res['id'];
+
+            // 🚀 Disparar Webhook a n8n para enviar correo automático de recepción al usuario
+            N8NService::notifyTicketCreated([
+                'id' => $ticketId,
+                'nombre' => $nombre,
+                'email' => $email,
+                'empresa' => $empresa,
+                'asunto' => $asunto,
+                'tipo_problema' => $tipo_problema,
+                'prioridad' => $prioridad,
+                'mensaje' => $mensaje,
+                'estado' => 'pendiente'
+            ]);
+
             echo json_encode([
                 'ok' => true,
-                'id' => $res['id'],
-                'mensaje' => 'Solicitud de soporte #' . $res['id'] . ' registrada correctamente.'
+                'id' => $ticketId,
+                'mensaje' => 'Solicitud de soporte #' . $ticketId . ' registrada correctamente.'
             ]);
         } else {
             echo json_encode([
@@ -82,6 +98,14 @@ class TicketController {
         $res = Ticket::updateStatus($id, $estado);
 
         if ($res['ok']) {
+            // Si el estado pasó a resuelto, notificar a n8n si está configurado
+            if ($estado === 'resuelto') {
+                $ticket = Ticket::getById($id);
+                if ($ticket) {
+                    N8NService::notifyTicketResolved($ticket);
+                }
+            }
+
             echo json_encode(['ok' => true, 'mensaje' => 'Estado actualizado a: ' . $estado]);
         } else {
             echo json_encode(['ok' => false, 'error' => $res['error'] ?? 'No se pudo actualizar el estado']);

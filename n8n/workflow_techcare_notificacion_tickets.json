@@ -1,0 +1,114 @@
+{
+  "name": "TechCare - Notificación Automática de Tickets por Correo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "techcare-ticket-creado",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-techcare",
+      "name": "Webhook TechCare (Ticket Creado)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ],
+      "webhookId": "techcare-ticket-creado"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer payload recibido desde TechCare PHP\nconst data = $input.first().json.body || $input.first().json;\n\nconst ticketId = data.ticket_id || 'N/A';\nconst nombre = data.nombre || 'Estimado(a) Usuario(a)';\nconst email = data.email || '';\nconst empresa = data.empresa || 'Particular';\nconst asunto = data.asunto || 'Sin Asunto';\nconst tipo = data.tipo_problema || 'SOFTWARE';\nconst prioridad = (data.prioridad || 'media').toUpperCase();\nconst mensaje = data.mensaje || '';\nconst fecha = data.timestamp || new Date().toLocaleString();\nconst urlSeguimiento = data.url_seguimiento || 'http://127.0.0.1:8000/index.php?action=formulario';\n\n// Colores según prioridad\nlet colorPrioridad = '#3b82f6'; // Azul medio\nif (prioridad === 'CRITICA' || prioridad === 'CRÍTICA') colorPrioridad = '#ef4444';\nelse if (prioridad === 'ALTA') colorPrioridad = '#f59e0b';\nelse if (prioridad === 'BAJA') colorPrioridad = '#10b981';\n\n// Construcción de plantilla HTML profesional para el correo\nconst htmlEmail = `\n<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Confirmación de Solicitud - TechCare Soporte TI</title>\n  <style>\n    body { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }\n    .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }\n    .header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #ffffff; padding: 28px 24px; text-align: center; }\n    .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }\n    .header p { margin: 6px 0 0 0; font-size: 13px; color: #93c5fd; }\n    .content { padding: 30px 24px; }\n    .saludo { font-size: 18px; font-weight: 600; color: #0f172a; margin-bottom: 12px; }\n    .intro { font-size: 14.5px; line-height: 1.6; color: #475569; margin-bottom: 24px; }\n    .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 18px; margin-bottom: 24px; }\n    .card-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }\n    .data-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }\n    .data-label { color: #64748b; font-weight: 500; }\n    .data-value { color: #0f172a; font-weight: 600; text-align: right; }\n    .badge-prio { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-size: 12px; font-weight: 700; color: #ffffff; background-color: ${colorPrioridad}; }\n    .mensaje-box { background: #ffffff; border-left: 4px solid #3b82f6; padding: 12px 14px; margin-top: 10px; font-style: italic; color: #334155; font-size: 13.5px; border-radius: 0 4px 4px 0; }\n    .notice-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; font-size: 13.5px; color: #1e40af; line-height: 1.5; }\n    .btn-container { text-align: center; margin: 28px 0 16px 0; }\n    .btn { background: #2563eb; color: #ffffff !important; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block; box-shadow: 0 2px 4px rgba(37,99,235,0.3); }\n    .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px 24px; text-align: center; font-size: 12px; color: #94a3b8; line-height: 1.5; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>🛡️ TechCare Soporte TI</h1>\n      <p>Mesa de Ayuda Inteligente & Analítica de Incidentes</p>\n    </div>\n    <div class=\"content\">\n      <div class=\"saludo\">¡Hola, ${nombre}! 👋</div>\n      <div class=\"intro\">\n        Confirmamos que tu solicitud de soporte técnico <strong>#${ticketId}</strong> ha sido recibida correctamente en nuestro sistema.\n      </div>\n\n      <div class=\"notice-box\">\n        <strong>ℹ️ Compromiso de Atención:</strong><br>\n        Nuestro equipo de ingenieros de TI ya se encuentra evaluando los detalles de tu caso. <strong>Nos pondremos en contacto contigo por este mismo medio tan pronto como el ticket haya sido resuelto</strong> o en caso de requerir información adicional.\n      </div>\n\n      <div class=\"card\">\n        <div class=\"card-title\">Resumen de la Solicitud Registrada</div>\n        <table style=\"width: 100%; border-collapse: collapse; font-size: 14px;\">\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Número de Ticket:</strong></td>\n            <td style=\"padding: 5px 0; color: #0f172a; text-align: right;\"><strong>#${ticketId}</strong></td>\n          </tr>\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Asunto:</strong></td>\n            <td style=\"padding: 5px 0; color: #0f172a; text-align: right;\">${asunto}</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Categoría:</strong></td>\n            <td style=\"padding: 5px 0; color: #0f172a; text-align: right;\">${tipo}</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Prioridad:</strong></td>\n            <td style=\"padding: 5px 0; text-align: right;\"><span class=\"badge-prio\">${prioridad}</span></td>\n          </tr>\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Empresa / Área:</strong></td>\n            <td style=\"padding: 5px 0; color: #0f172a; text-align: right;\">${empresa}</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 5px 0; color: #64748b;\"><strong>Fecha y Hora:</strong></td>\n            <td style=\"padding: 5px 0; color: #0f172a; text-align: right;\">${fecha}</td>\n          </tr>\n        </table>\n        <div style=\"margin-top: 12px;\">\n          <span style=\"font-size: 12px; color: #64748b; font-weight: 600;\">Descripción enviada:</span>\n          <div class=\"mensaje-box\">${mensaje}</div>\n        </div>\n      </div>\n\n      <div class=\"btn-container\">\n        <a href=\"${urlSeguimiento}\" class=\"btn\" target=\"_blank\">Consultar Historial de Mis Solicitudes</a>\n      </div>\n    </div>\n    <div class=\"footer\">\n      Este es un correo automático generado por el flujo de automatización de <strong>TechCare Soporte TI</strong> vía <strong>n8n</strong>.<br>\n      Por favor no respondas directamente a este mensaje.\n    </div>\n  </div>\n</body>\n</html>\n`;\n\nreturn {\n  ticket_id: ticketId,\n  nombre: nombre,\n  email: email,\n  asunto_email: `[TechCare Soporte TI] Solicitud #${ticketId} Recibida - ${asunto}`,\n  html_email: htmlEmail,\n  timestamp: fecha\n};\n"
+      },
+      "id": "code-preparar-email",
+      "name": "Generar Plantilla HTML Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.asunto_email }}",
+        "message": "={{ $json.html_email }}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "email-send",
+      "name": "Enviar Correo al Usuario (SMTP / Gmail)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-techcare",
+          "name": "Servidor SMTP / Gmail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"ticket_id\": {{ $json.ticket_id }},\n  \"destinatario\": \"{{ $json.email }}\",\n  \"mensaje\": \"Notificación por correo despachada exitosamente desde n8n\"\n}",
+        "options": {}
+      },
+      "id": "respond-webhook",
+      "name": "Responder a TechCare",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        940,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook TechCare (Ticket Creado)": {
+      "main": [
+        [
+          {
+            "node": "Generar Plantilla HTML Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Plantilla HTML Email": {
+      "main": [
+        [
+          {
+            "node": "Enviar Correo al Usuario (SMTP / Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Correo al Usuario (SMTP / Gmail)": {
+      "main": [
+        [
+          {
+            "node": "Responder a TechCare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "techcare-v1"
+}

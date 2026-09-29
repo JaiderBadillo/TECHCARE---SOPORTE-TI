@@ -13,12 +13,23 @@ class Database {
     private static $db   = 'soporte_db';
     private static $conn = null;
 
+    private static function initConfig() {
+        self::$host = getenv('DB_HOST') ?: '127.0.0.1';
+        self::$user = getenv('DB_USER') ?: 'root';
+        self::$pass = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : (getenv('MYSQL_PASSWORD') !== false ? getenv('MYSQL_PASSWORD') : '');
+        self::$db   = getenv('DB_NAME') ?: (getenv('MYSQL_DATABASE') ?: 'soporte_db');
+    }
+
     public static function getConnection() {
         if (self::$conn !== null) {
             return self::$conn;
         }
 
-        $ports = [3306, 3307, 3308];
+        self::initConfig();
+
+        // Si se define un puerto específico en variables de entorno (Render/Cloud)
+        $envPort = getenv('DB_PORT') ? (int)getenv('DB_PORT') : 0;
+        $ports = $envPort > 0 ? [$envPort, 3306, 3307, 3308] : [3306, 3307, 3308];
         $conn = null;
         $connected = false;
 

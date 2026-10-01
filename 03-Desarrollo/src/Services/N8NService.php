@@ -67,13 +67,19 @@ class N8NService {
         }
 
         $appUrl = defined('APP_URL') ? rtrim(APP_URL, '/') : 'http://127.0.0.1:8000';
+        $ticketId = $ticketData['id'] ?? 0;
+        $userEmail = $ticketData['email'] ?? '';
+        $token = hash_hmac('sha256', $ticketId . $userEmail, 'techcare_csat_secret_2026');
+
+        $urlFeedbackSi = $appUrl . '/index.php?route=feedback&id=' . $ticketId . '&solucionado=si&token=' . $token;
+        $urlFeedbackNo = $appUrl . '/index.php?route=feedback&id=' . $ticketId . '&solucionado=no&token=' . $token;
 
         $payload = [
             'evento' => 'ticket_resuelto',
             'timestamp' => date('Y-m-d H:i:s'),
-            'ticket_id' => $ticketData['id'] ?? 0,
+            'ticket_id' => $ticketId,
             'nombre' => $ticketData['nombre'] ?? 'Usuario',
-            'email' => $ticketData['email'] ?? '',
+            'email' => $userEmail,
             'empresa' => $ticketData['empresa'] ?? 'Particular',
             'asunto' => $ticketData['asunto'] ?? '',
             'tipo_problema' => $ticketData['tipo_problema'] ?? 'SOFTWARE',
@@ -82,7 +88,47 @@ class N8NService {
             'estado' => 'resuelto',
             'asignado_a' => $ticketData['asignado_a'] ?? 'Equipo de Soporte TI',
             'url_seguimiento' => $appUrl . '/index.php?action=formulario',
+            'url_feedback_si' => $urlFeedbackSi,
+            'url_feedback_no' => $urlFeedbackNo,
             'mensaje_notificacion' => '¡Buenas noticias! Tu solicitud de soporte técnico ha sido resuelta exitosamente por nuestro equipo de TI.'
+        ];
+
+        return self::sendWebhook($webhookUrl, $payload);
+    }
+
+    /**
+     * Notificar a n8n cuando un usuario devuelve / reabre un ticket no resuelto
+     * Dispara alerta de prioridad urgente para el equipo de soporte
+     * 
+     * @param array $ticketData Datos del ticket devuelto
+     * @param string $motivo Motivo u observación indicada por el usuario
+     * @return bool
+     */
+    public static function notifyTicketDevuelto(array $ticketData, $motivo = '') {
+        $enabled = defined('N8N_WEBHOOK_ENABLED') ? (bool)N8N_WEBHOOK_ENABLED : false;
+        $webhookUrl = defined('N8N_WEBHOOK_URL') ? trim(N8N_WEBHOOK_URL) : '';
+
+        if (!$enabled || empty($webhookUrl)) {
+            return true;
+        }
+
+        $appUrl = defined('APP_URL') ? rtrim(APP_URL, '/') : 'http://127.0.0.1:8000';
+
+        $payload = [
+            'evento' => 'ticket_devuelto',
+            'timestamp' => date('Y-m-d H:i:s'),
+            'ticket_id' => $ticketData['id'] ?? 0,
+            'nombre' => $ticketData['nombre'] ?? 'Usuario',
+            'email' => $ticketData['email'] ?? '',
+            'empresa' => $ticketData['empresa'] ?? 'Particular',
+            'asunto' => $ticketData['asunto'] ?? '',
+            'tipo_problema' => $ticketData['tipo_problema'] ?? 'SOFTWARE',
+            'prioridad' => $ticketData['prioridad'] ?? 'alta',
+            'motivo_devolucion' => $motivo,
+            'estado' => 'en_proceso',
+            'devuelto' => 1,
+            'url_dashboard' => $appUrl . '/index.php?route=dashboard&estado=devuelto',
+            'mensaje_alerta' => 'ALERTA: El usuario ha devuelto el ticket #' . ($ticketData['id'] ?? 0) . ' indicando que el problema NO fue resuelto. Se ha escalado a prioridad ALTA.'
         ];
 
         return self::sendWebhook($webhookUrl, $payload);

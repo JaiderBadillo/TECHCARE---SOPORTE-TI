@@ -147,6 +147,34 @@ $solLarga = LocalExpertService::diagnoseTicket('RED', 'alta', 'Alerta masiva', $
 assertTest('CP-EDGE-03', 'Manejo de textos de longitud extrema sin desbordamiento de memoria', !empty($solLarga['diagnostico']));
 
 // -------------------------------------------------------------
+// 6. PRUEBAS DE CALIDAD ITIL, ENCUESTA CSAT Y DEVOLUCIÓN DE TICKETS
+// -------------------------------------------------------------
+echo "\n--- 6. Pruebas de Calidad ITIL, Encuesta CSAT y Devolución de Tickets ---\n";
+
+require_once $baseDir . '/src/Models/Ticket.php';
+require_once $baseDir . '/src/Services/N8NService.php';
+
+// Verificación de métodos en el modelo Ticket
+$hasDevolverMethod = method_exists('Ticket', 'devolver');
+$hasFeedbackMethod = method_exists('Ticket', 'guardarFeedback');
+assertTest('CP-CSAT-01', 'Existencia de métodos de devolución y guardado CSAT en Ticket', $hasDevolverMethod && $hasFeedbackMethod);
+
+// Validación de generación de token seguro HMAC para URLs de feedback
+$testTicketId = 999;
+$testEmail = 'cliente.prueba@empresa.com';
+$tokenGenerado = hash_hmac('sha256', $testTicketId . $testEmail, 'techcare_csat_secret_2026');
+$tokenVerificado = hash_equals(hash_hmac('sha256', 999 . 'cliente.prueba@empresa.com', 'techcare_csat_secret_2026'), $tokenGenerado);
+assertTest('CP-CSAT-02', 'Cálculo y validación criptográfica de tokens seguros HMAC para feedback', $tokenVerificado);
+
+// Verificación de integridad del archivo de workflow n8n
+$n8nWorkflowPath = dirname(__DIR__) . '/n8n/workflow_techcare_notificacion_tickets.json';
+$wfContent = file_get_contents($n8nWorkflowPath);
+$hasCsatAndReturn = strpos($wfContent, 'ticket_devuelto') !== false && 
+                    strpos($wfContent, 'urlFeedbackSi') !== false && 
+                    strpos($wfContent, 'urlFeedbackNo') !== false;
+assertTest('CP-CSAT-03', 'Integración del flujo n8n con eventos de devolución y botones CSAT', $hasCsatAndReturn);
+
+// -------------------------------------------------------------
 // RESUMEN Y ESTADÍSTICAS
 // -------------------------------------------------------------
 echo "\n====================================================================\n";

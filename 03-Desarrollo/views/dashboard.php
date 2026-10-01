@@ -65,8 +65,8 @@ function getPrioridadBadge($prioridad) {
   <!-- KPIs Generales -->
   <div class="row g-3 mb-4">
     <!-- Total Histórico -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm border-0">
         <div class="d-flex align-items-center justify-content-between mb-2">
           <span class="text-muted small fw-semibold">Total Tickets</span>
           <div class="kpi-icon-box bg-primary-subtle text-primary">
@@ -78,23 +78,9 @@ function getPrioridadBadge($prioridad) {
       </div>
     </div>
 
-    <!-- Solicitudes Este Mes -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <span class="text-muted small fw-semibold">Este Mes</span>
-          <div class="kpi-icon-box bg-info-subtle text-info">
-            <i class="bi bi-calendar-event"></i>
-          </div>
-        </div>
-        <div class="fs-3 fw-bold text-dark"><?= $metrics['esteMes'] ?></div>
-        <div class="small text-muted mt-1">Registros del mes</div>
-      </div>
-    </div>
-
     <!-- Pendientes -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm border-0">
         <div class="d-flex align-items-center justify-content-between mb-2">
           <span class="text-muted small fw-semibold">Pendientes</span>
           <div class="kpi-icon-box bg-danger-subtle text-danger">
@@ -107,8 +93,8 @@ function getPrioridadBadge($prioridad) {
     </div>
 
     <!-- En Proceso -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm border-0">
         <div class="d-flex align-items-center justify-content-between mb-2">
           <span class="text-muted small fw-semibold">En Proceso</span>
           <div class="kpi-icon-box bg-warning-subtle text-warning-emphasis">
@@ -116,13 +102,43 @@ function getPrioridadBadge($prioridad) {
           </div>
         </div>
         <div class="fs-3 fw-bold text-warning-emphasis"><?= $metrics['estados']['en_proceso'] ?></div>
-        <div class="small text-muted mt-1">En diagnóstico técnico</div>
+        <div class="small text-muted mt-1">En diagnóstico</div>
+      </div>
+    </div>
+
+    <!-- Tickets Devueltos / Reabiertos (Nuevo Módulo de Calidad) -->
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm <?= $metrics['devueltos'] > 0 ? 'border border-danger border-opacity-75 bg-danger bg-opacity-10' : 'border-0' ?>">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="text-danger small fw-bold"><i class="bi bi-arrow-return-left me-1"></i>Devueltos</span>
+          <div class="kpi-icon-box bg-danger text-white">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </div>
+        </div>
+        <div class="fs-3 fw-bold text-danger"><?= $metrics['devueltos'] ?></div>
+        <div class="small <?= $metrics['devueltos'] > 0 ? 'text-danger fw-semibold' : 'text-muted' ?> mt-1">Reabiertos por usuario</div>
+      </div>
+    </div>
+
+    <!-- Satisfacción CSAT (Nuevo Módulo de Calidad) -->
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm border-0">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="text-warning-emphasis small fw-bold"><i class="bi bi-stars me-1"></i>Satisfacción</span>
+          <div class="kpi-icon-box bg-warning-subtle text-warning">
+            <i class="bi bi-star-fill"></i>
+          </div>
+        </div>
+        <div class="fs-3 fw-bold text-dark">
+          <?= $metrics['csatPromedio'] > 0 ? $metrics['csatPromedio'] : '5.0' ?> <span class="fs-6 text-warning">★</span>
+        </div>
+        <div class="small text-muted mt-1"><?= $metrics['csatTotalVotos'] ?> opiniones CSAT</div>
       </div>
     </div>
 
     <!-- Tasa de Resolución -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
+    <div class="col-sm-6 col-md-4 col-xl-2">
+      <div class="card kpi-card p-3 h-100 shadow-sm border-0">
         <div class="d-flex align-items-center justify-content-between mb-2">
           <span class="text-muted small fw-semibold">Tasa Resolución</span>
           <div class="kpi-icon-box bg-success-subtle text-success">
@@ -131,20 +147,6 @@ function getPrioridadBadge($prioridad) {
         </div>
         <div class="fs-3 fw-bold text-success"><?= $metrics['tasaResolucion'] ?>%</div>
         <div class="small text-muted mt-1"><?= $metrics['estados']['resuelto'] ?> resueltos</div>
-      </div>
-    </div>
-
-    <!-- Mayor Demanda -->
-    <div class="col-sm-6 col-xl-2">
-      <div class="card kpi-card p-3 h-100">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <span class="text-muted small fw-semibold">Top Especialidad</span>
-          <div class="kpi-icon-box bg-dark text-white">
-            <i class="bi bi-bar-chart-fill"></i>
-          </div>
-        </div>
-        <div class="fs-5 fw-bold text-dark text-truncate" title="<?= $metrics['tipoMayorDemanda'] ?>"><?= $metrics['tipoMayorDemanda'] ?></div>
-        <div class="small text-muted mt-1">Mayor carga operativa</div>
       </div>
     </div>
   </div>
@@ -274,9 +276,10 @@ function getPrioridadBadge($prioridad) {
       <div class="col-md-2">
         <select name="estado" class="form-select form-select-sm">
           <option value="">Todos los estados</option>
-          <option value="pendiente" <?= ($_GET['estado'] ?? '') === 'pendiente' ? 'selected' : '' ?>>Pendientes</option>
-          <option value="en_proceso" <?= ($_GET['estado'] ?? '') === 'en_proceso' ? 'selected' : '' ?>>En proceso</option>
-          <option value="resuelto" <?= ($_GET['estado'] ?? '') === 'resuelto' ? 'selected' : '' ?>>Resueltos</option>
+          <option value="pendiente" <?= ($_GET['estado'] ?? '') === 'pendiente' ? 'selected' : '' ?>>Pendientes (<?= $metrics['estados']['pendiente'] ?>)</option>
+          <option value="en_proceso" <?= ($_GET['estado'] ?? '') === 'en_proceso' ? 'selected' : '' ?>>En proceso (<?= $metrics['estados']['en_proceso'] ?>)</option>
+          <option value="resuelto" <?= ($_GET['estado'] ?? '') === 'resuelto' ? 'selected' : '' ?>>Resueltos (<?= $metrics['estados']['resuelto'] ?>)</option>
+          <option value="devuelto" <?= ($_GET['estado'] ?? '') === 'devuelto' ? 'selected' : '' ?> class="text-danger fw-bold">🚨 Devueltos / Reabiertos (<?= $metrics['devueltos'] ?>)</option>
         </select>
       </div>
 
@@ -309,6 +312,26 @@ function getPrioridadBadge($prioridad) {
     </form>
   </div>
 
+  <!-- Pestañas Rápidas de Estados y Devueltos -->
+  <div class="d-flex gap-2 flex-wrap mb-3 align-items-center">
+    <span class="small fw-semibold text-muted me-1"><i class="bi bi-funnel-fill me-1"></i>Vistas Rápidas:</span>
+    <a href="index.php?route=dashboard" class="btn btn-sm rounded-pill <?= empty($_GET['estado']) ? 'btn-primary' : 'btn-outline-secondary' ?>">
+      Todos (<?= $metrics['total'] ?>)
+    </a>
+    <a href="index.php?route=dashboard&estado=pendiente" class="btn btn-sm rounded-pill <?= ($_GET['estado'] ?? '') === 'pendiente' ? 'btn-danger text-white' : 'btn-outline-danger' ?>">
+      Pendientes (<?= $metrics['estados']['pendiente'] ?>)
+    </a>
+    <a href="index.php?route=dashboard&estado=en_proceso" class="btn btn-sm rounded-pill <?= ($_GET['estado'] ?? '') === 'en_proceso' ? 'btn-warning text-dark' : 'btn-outline-warning text-dark' ?>">
+      En Proceso (<?= $metrics['estados']['en_proceso'] ?>)
+    </a>
+    <a href="index.php?route=dashboard&estado=resuelto" class="btn btn-sm rounded-pill <?= ($_GET['estado'] ?? '') === 'resuelto' ? 'btn-success text-white' : 'btn-outline-success' ?>">
+      Resueltos (<?= $metrics['estados']['resuelto'] ?>)
+    </a>
+    <a href="index.php?route=dashboard&estado=devuelto" class="btn btn-sm rounded-pill <?= ($_GET['estado'] ?? '') === 'devuelto' ? 'btn-danger text-white shadow-sm' : 'btn-outline-danger' ?>">
+      <i class="bi bi-arrow-return-left me-1"></i>Devueltos / Reabiertos (<?= $metrics['devueltos'] ?>)
+    </a>
+  </div>
+
   <!-- Tabla de Tickets -->
   <div class="card shadow-sm rounded-4 border-0 overflow-hidden">
     <div class="table-responsive">
@@ -318,7 +341,7 @@ function getPrioridadBadge($prioridad) {
             <th class="ps-3">#ID</th>
             <th>Fecha</th>
             <th>Solicitante</th>
-            <th>Asunto</th>
+            <th>Asunto & Feedback</th>
             <th>Categoría</th>
             <th>Prioridad</th>
             <th>Estado</th>
@@ -328,8 +351,15 @@ function getPrioridadBadge($prioridad) {
         <tbody>
           <?php if (!empty($tickets)): ?>
             <?php foreach ($tickets as $row): ?>
-              <tr>
-                <td class="ps-3 fw-bold text-muted">#<?= $row['id'] ?></td>
+              <tr class="<?= !empty($row['devuelto']) ? 'table-danger bg-opacity-25' : '' ?>">
+                <td class="ps-3 fw-bold text-muted text-nowrap">
+                  #<?= $row['id'] ?>
+                  <?php if (!empty($row['devuelto'])): ?>
+                    <span class="badge bg-danger rounded-pill px-2 py-1 small d-block mt-1 shadow-sm" title="<?= htmlspecialchars($row['motivo_devolucion'] ?? 'Devuelto por el usuario') ?>">
+                      <i class="bi bi-arrow-return-left me-1"></i>DEVUELTO
+                    </span>
+                  <?php endif; ?>
+                </td>
                 <td class="small text-nowrap"><?= date('d/m/Y H:i', strtotime($row['fecha_creacion'])) ?></td>
                 <td>
                   <div class="fw-semibold text-dark"><?= htmlspecialchars($row['nombre']) ?></div>
@@ -342,6 +372,26 @@ function getPrioridadBadge($prioridad) {
                   <div class="small text-muted text-truncate" style="max-width: 260px;" title="<?= htmlspecialchars($row['mensaje']) ?>">
                     <?= htmlspecialchars($row['mensaje']) ?>
                   </div>
+                  <?php if (!empty($row['calificacion_csat'])): ?>
+                    <div class="mt-1 small" title="Calificación del cliente: <?= (int)$row['calificacion_csat'] ?>/5 estrellas">
+                      <span class="text-warning">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                          <i class="bi bi-star<?= $i <= $row['calificacion_csat'] ? '-fill' : '' ?>"></i>
+                        <?php endfor; ?>
+                      </span>
+                      <span class="text-muted ms-1">(<?= (int)$row['calificacion_csat'] ?>/5)</span>
+                      <?php if (!empty($row['comentario_feedback'])): ?>
+                        <span class="badge bg-light text-dark border ms-1" title="<?= htmlspecialchars($row['comentario_feedback']) ?>">
+                          <i class="bi bi-chat-left-quote-fill text-primary me-1"></i>Opinión
+                        </span>
+                      <?php endif; ?>
+                    </div>
+                  <?php endif; ?>
+                  <?php if (!empty($row['devuelto']) && !empty($row['motivo_devolucion'])): ?>
+                    <div class="small text-danger mt-1 text-truncate" style="max-width: 260px;" title="<?= htmlspecialchars($row['motivo_devolucion']) ?>">
+                      <i class="bi bi-info-circle-fill me-1"></i><?= htmlspecialchars($row['motivo_devolucion']) ?>
+                    </div>
+                  <?php endif; ?>
                 </td>
                 <td><?= getTipoBadge($row['tipo_problema']) ?></td>
                 <td><?= getPrioridadBadge($row['prioridad']) ?></td>

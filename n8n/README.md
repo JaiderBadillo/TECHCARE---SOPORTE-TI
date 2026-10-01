@@ -1,17 +1,16 @@
 # ⚡ Integración de Automatización con n8n — TechCare Soporte TI
 **Proyecto:** TechCare Soporte TI — Mesa de Ayuda Inteligente  
-**Módulo:** Automatización de Notificaciones por Correo Electrónico  
+**Módulo:** Automatización de Notificaciones, Encuesta CSAT y Devolución Prioritaria  
 **Desarrollador:** Jaider Augusto Niño Badillo  
-**Versión:** 2.2.0  
+**Versión:** 2.3.0  
 
 ---
 
 ## 🎯 Objetivo de la Integración
 
-Enviar **automáticamente un correo electrónico formal y personalizado** al usuario solicitante en el instante en que radica un ticket en TechCare, confirmándole:
-1. Que su solicitud ha sido **recibida y registrada exitosamente** con su número único de ticket (`#ID`).
-2. El resumen de los datos registrados (Asunto, Categoría, Prioridad, Empresa y Fecha).
-3. El compromiso formal de que **el equipo técnico de TI ya se encuentra evaluando el caso y lo contactará en cuanto el ticket quede resuelto**.
+1. **Notificación de Recepción:** Enviar automáticamente un correo electrónico formal y personalizado al usuario en cuanto radica un ticket con su `#ID` y resumen del incidente.
+2. **Notificación de Resolución con Encuesta CSAT:** Al resolver el ticket, notificar al usuario con botones interactivos de 1 clic para validar si el problema fue resuelto y calificar la atención (1 a 5 estrellas).
+3. **Gestión Automática de Tickets Devueltos:** Si el usuario indica que la incidencia persiste, el sistema reabre el caso de inmediato, escala su prioridad a **Alta / Crítica** y alerta al equipo técnico vía n8n.
 
 ---
 

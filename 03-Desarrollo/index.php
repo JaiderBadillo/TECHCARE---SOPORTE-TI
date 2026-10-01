@@ -35,6 +35,10 @@ if ($action) {
             TicketController::guardar();
             break;
 
+        case 'ticket_feedback':
+            TicketController::feedback();
+            break;
+
         // Acciones Protegidas para Técnicos y Administradores
         case 'ticket_estado':
             AuthController::requireAdmin();
@@ -59,6 +63,12 @@ if ($action) {
 }
 
 // 2. Manejo de Vistas (HTML)
+
+// Vista de Retroalimentación y Encuesta CSAT
+if ($route === 'feedback') {
+    TicketController::feedback();
+    exit;
+}
 
 // Vista de Registro de Usuario
 if ($route === 'registro') {

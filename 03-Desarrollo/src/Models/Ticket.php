@@ -25,6 +25,38 @@ class Ticket {
         if ($rEmp && $rEmp->num_rows === 0) {
             @$conn->query("ALTER TABLE solicitudes ADD COLUMN empresa VARCHAR(150) NULL AFTER email");
         }
+
+        // Comprobar columnas de Devolución de Tickets (CSAT y Reapertura)
+        $rDev = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'devuelto'");
+        if ($rDev && $rDev->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN devuelto TINYINT(1) DEFAULT 0 AFTER estado");
+        }
+
+        $rMot = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'motivo_devolucion'");
+        if ($rMot && $rMot->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN motivo_devolucion TEXT NULL AFTER devuelto");
+        }
+
+        $rFDev = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'fecha_devolucion'");
+        if ($rFDev && $rFDev->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN fecha_devolucion DATETIME NULL AFTER motivo_devolucion");
+        }
+
+        // Comprobar columnas de Encuesta CSAT / Satisfacción
+        $rCsat = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'calificacion_csat'");
+        if ($rCsat && $rCsat->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN calificacion_csat TINYINT NULL AFTER fecha_devolucion");
+        }
+
+        $rFeed = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'comentario_feedback'");
+        if ($rFeed && $rFeed->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN comentario_feedback TEXT NULL AFTER calificacion_csat");
+        }
+
+        $rFFeed = $conn->query("SHOW COLUMNS FROM solicitudes LIKE 'fecha_feedback'");
+        if ($rFFeed && $rFFeed->num_rows === 0) {
+            @$conn->query("ALTER TABLE solicitudes ADD COLUMN fecha_feedback DATETIME NULL AFTER comentario_feedback");
+        }
     }
     
     /**
@@ -160,9 +192,74 @@ class Ticket {
     }
 
     /**
+     * Reabrir / Devolver un ticket cuando el usuario indica que el problema no se resolvió
+     * Escala automáticamente la prioridad y registra el motivo
+     */
+    public static function devolver($id, $motivo = '') {
+        self::ensureTableSchema();
+        $conn = Database::getConnection();
+
+        // Obtener ticket actual para conocer su prioridad
+        $ticket = self::getById($id);
+        if (!$ticket) {
+            return ['ok' => false, 'error' => 'Ticket no encontrado'];
+        }
+
+        // Escalamiento automático de prioridad
+        $prioridadActual = strtolower($ticket['prioridad'] ?? 'media');
+        $nuevaPrioridad = 'alta';
+        if ($prioridadActual === 'alta' || $prioridadActual === 'critica') {
+            $nuevaPrioridad = 'critica';
+        }
+
+        $motivoFinal = !empty($motivo) ? trim($motivo) : 'El usuario reportó que la solución técnica no resolvió la incidencia.';
+
+        $stmt = $conn->prepare("UPDATE solicitudes SET devuelto = 1, estado = 'en_proceso', prioridad = ?, motivo_devolucion = ?, fecha_devolucion = NOW() WHERE id = ?");
+        if (!$stmt) {
+            return ['ok' => false, 'error' => $conn->error];
+        }
+
+        $stmt->bind_param("ssi", $nuevaPrioridad, $motivoFinal, $id);
+        $success = $stmt->execute();
+        $stmt->close();
+
+        if ($success) {
+            $ticketActualizado = self::getById($id);
+            return ['ok' => true, 'ticket' => $ticketActualizado];
+        }
+
+        return ['ok' => false, 'error' => 'Error al devolver el ticket'];
+    }
+
+    /**
+     * Guardar la calificación CSAT y retroalimentación del cliente
+     */
+    public static function guardarFeedback($id, $csat, $comentario = '') {
+        self::ensureTableSchema();
+        $conn = Database::getConnection();
+
+        $csat = (int)$csat;
+        if ($csat < 1) $csat = 1;
+        if ($csat > 5) $csat = 5;
+
+        $comentario = trim($comentario);
+
+        $stmt = $conn->prepare("UPDATE solicitudes SET calificacion_csat = ?, comentario_feedback = ?, fecha_feedback = NOW() WHERE id = ?");
+        if (!$stmt) {
+            return ['ok' => false, 'error' => $conn->error];
+        }
+
+        $stmt->bind_param("isi", $csat, $comentario, $id);
+        $success = $stmt->execute();
+        $stmt->close();
+
+        return ['ok' => $success];
+    }
+
+    /**
      * Obtener listado de tickets con filtros opcionales (Dashboard Administrativo)
      */
-    public static function getAll($filtroEstado = '', $filtroTipo = '', $filtroPrioridad = '', $filtroBusqueda = '') {
+    public static function getAll($filtroEstado = '', $filtroTipo = '', $filtroPrioridad = '', $filtroBusqueda = '', $soloDevueltos = false) {
         self::ensureTableSchema();
         $conn = Database::getConnection();
         
@@ -170,11 +267,14 @@ class Ticket {
         $params = [];
         $types = '';
 
-        if (!empty($filtroEstado)) {
+        if ($filtroEstado === 'devuelto' || $soloDevueltos) {
+            $where[] = "devuelto = 1";
+        } elseif (!empty($filtroEstado)) {
             $where[] = "estado = ?";
             $params[] = $filtroEstado;
             $types .= 's';
         }
+
         if (!empty($filtroTipo)) {
             $where[] = "tipo_problema = ?";
             $params[] = $filtroTipo;
@@ -198,7 +298,7 @@ class Ticket {
         if ($where) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
-        $sql .= " ORDER BY fecha_creacion DESC";
+        $sql .= " ORDER BY (CASE WHEN devuelto = 1 THEN 0 ELSE 1 END) ASC, fecha_creacion DESC";
 
         $stmt = $conn->prepare($sql);
         if (!$stmt) return [];
@@ -243,6 +343,17 @@ class Ticket {
                 $estados[$row['estado']] = (int)$row['c'];
             }
         }
+
+        // Tickets Devueltos
+        $rDevueltos = $conn->query("SELECT COUNT(*) as c FROM solicitudes WHERE devuelto = 1");
+        $rowDevueltos = $rDevueltos ? $rDevueltos->fetch_assoc() : null;
+        $totalDevueltos = (int)($rowDevueltos['c'] ?? 0);
+
+        // Métricas de Satisfacción CSAT
+        $rCsat = $conn->query("SELECT AVG(calificacion_csat) as prom, COUNT(calificacion_csat) as total FROM solicitudes WHERE calificacion_csat IS NOT NULL");
+        $rowCsat = $rCsat ? $rCsat->fetch_assoc() : null;
+        $csatPromedio = $rowCsat && $rowCsat['prom'] !== null ? round((float)$rowCsat['prom'], 1) : 0;
+        $csatTotalVotos = (int)($rowCsat['total'] ?? 0);
         
         // Prioridades
         $rPrios = $conn->query("SELECT prioridad, COUNT(*) as c FROM solicitudes GROUP BY prioridad");
@@ -317,6 +428,9 @@ class Ticket {
             'total' => $total,
             'esteMes' => $esteMes,
             'estados' => $estados,
+            'devueltos' => $totalDevueltos,
+            'csatPromedio' => $csatPromedio,
+            'csatTotalVotos' => $csatTotalVotos,
             'prioridades' => $prioridades,
             'tipos' => $datosTipos,
             'tipoMayorDemanda' => $tipoMayorDemanda,
